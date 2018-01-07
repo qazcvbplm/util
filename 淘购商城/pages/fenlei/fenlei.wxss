@@ -1,0 +1,85 @@
+page{
+  background: #f3f3f3
+}
+.dmc{
+  background: #fff;
+  display: flex;
+}
+.dmc .dleft{
+  width: 200rpx;
+  background: #f1f1f1;
+}
+.dmc .dleft .item{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 20rpx;
+  height: 100rpx;
+  font-weight: bold;
+  color: #6d6e70;
+  font-size: 27rpx;
+  border-bottom:1px dashed #e1e1e1
+}
+.gg{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+.glist{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-content: center;
+  border-bottom: 3px solid #f3f3f3;
+}
+.glist .pho{
+  width: 150rpx;
+  height: 140rpx;
+  position: relative;
+}
+.p1{
+  width: 150rpx;
+  height: 140rpx;
+  border-radius: 10rpx;
+  border:0.5rpx solid gainsboro;
+  position: relative;
+}
+.glist .con{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  position: relative;
+  margin-left: 20rpx;
+}
+.glist .con .tit{
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 30rpx;
+  color: #323232;
+  font-weight: bold;
+  line-height: 35rpx
+}
+.zhe{
+  border: 1px solid #f26c63;
+  padding: 2rpx 8rpx;
+  font-size: 15rpx;
+  color: #f26c63;
+  border-radius: 10rpx
+}
+.glist .con .txt{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 15rpx;
+}
+.glist .tet{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  color: #676767;
+  margin-top: 15rpx;
+}
