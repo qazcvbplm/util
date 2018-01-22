@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Layout, Icon, Menu, Badge } from 'antd';
 import { Link } from 'react-router-dom';
-import history from './history';
 
 const { Header } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -25,7 +24,7 @@ export default class HeaderCustom extends Component{
     };
     logout(){
         localStorage.removeItem("mspa_user");
-        history.push('/login');
+        /*history.push('/login');*/
     }
     render(){
         return(

@@ -53,10 +53,10 @@ module.exports = {
   // Don't attempt to continue if there are any errors.
   bail: true,
   // We generate sourcemaps in production. This is slow but gives good results.
-  // You can exclude the *.map files from the build during deployment.
-  devtool: shouldUseSourceMap ? 'source-map' : false,
+  // You can exclude the *.map files from the build during deployment.   //shouldUseSourceMap ? 'source-map' :
+  devtool:  false,
   // In production, we only want to load the polyfills and the app code.
-  entry: [require.resolve('./polyfills'), paths.appIndexJs],
+  entry: [require.resolve('./polyfills'), paths.appIndexJs,],
   output: {
     // The build folder.
     path: paths.appBuild,
@@ -102,6 +102,7 @@ module.exports = {
       // please link the files into your node_modules/ and let module-resolution kick in.
       // Make sure your source files are compiled, as they will not be processed in any way.
       new ModuleScopePlugin(paths.appSrc, [paths.appPackageJson]),
+	  new webpack.optimize.ModuleConcatenationPlugin(),
     ],
   },
   module: {

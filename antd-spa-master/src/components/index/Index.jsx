@@ -5,7 +5,6 @@ import zysoft from '../../style/img/avatar.jpg';
 import './index.less';
 import CountUp from 'react-countup';
 import ReactEcharts from 'echarts-for-react';
-
 const Panel = Collapse.Panel;
 const classify = [
     "社会",
@@ -82,9 +81,12 @@ const data = [{
 }];
 
 export default class MIndex extends Component {
+    /*constructor(props) {
+         super(props);
+    }*/
     CountUp(){
         let imgSrc = ["mail","chat","cart","heart"];
-        let imgName = ["Mails","Dialogue","Carts","Collection"];
+        let imgName = ["新用户","新会员","订单数","营业额"];
         let count = ["1379","768","192","413"];
         let cu = imgSrc.map(function(item,index){
             return(
@@ -108,7 +110,7 @@ export default class MIndex extends Component {
             backgroundColor: "#fff",
             color: ['rgb(216, 151, 235)', 'rgb(246, 152, 153)', 'rgb(100, 234, 145)'],
             title: [{
-                text: '账单/亿',
+                text: '账单/元',
                 left: '2%',
                 top: '6%',
                 textStyle: {
@@ -129,7 +131,7 @@ export default class MIndex extends Component {
                 textStyle: {
                     color: 'gray',
                 },
-                data: ['网购', '线下', '其他']
+                data: ['外卖', '跑腿','会员']
             },
             xAxis: {
                 type: 'category',
@@ -142,7 +144,7 @@ export default class MIndex extends Component {
                 axisLabel:{
                     color:'gray'
                 },
-                data: ['2011', '2012', '2013', '2014', '2015', '2016', '2017']
+                data: ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日']
             },
             yAxis: {
                 min: 0,
@@ -158,21 +160,21 @@ export default class MIndex extends Component {
                 },
             },
             series: [{
-                name: '网购',
+                name: '外卖',
                 smooth: true,
                 type: 'line',
                 symbolSize: 8,
                 symbol: 'circle',
                 data: [10, 40, 32, 20, 80, 90, 97]
             }, {
-                name: '线下',
+                name: '跑腿',
                 smooth: true,
                 type: 'line',
                 symbolSize: 8,
                 symbol: 'circle',
                 data: [70, 50, 50, 87, 90, 80, 70]
             },{
-                name: '其他',
+                name: '会员',
                 smooth: true,
                 type: 'line',
                 symbolSize: 8,
@@ -217,8 +219,8 @@ export default class MIndex extends Component {
                                         src={zysoft}
                                         style={{width: '60px', height: '60px', borderRadius: '50%'}}
                                     />
-                                    <p>zysoft</p>
-                                    <p>zhaoyu_m69@163.com</p>
+                                    <p>onepieces</p>
+                                    <p>471594060@qq.com</p>
                                 </div>
                                 <div className='weather'>
                                     {/*心知天气API*/}
@@ -226,7 +228,7 @@ export default class MIndex extends Component {
                                         <img src={require('../../style/img/0.png')} alt=""/>
                                     </div>
                                     <div className='weather-info'>
-                                        <span>南京</span>&nbsp;<span>16℃</span>
+                                        <span>火星</span>&nbsp;<span>16℃</span>
                                     </div>
                                 </div>
                             </Card>

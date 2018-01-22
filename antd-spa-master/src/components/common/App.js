@@ -1,15 +1,12 @@
 import React, {Component} from 'react';
-import {Redirect, Route, Switch} from 'react-router-dom';
+import {Route, Switch} from 'react-router-dom';
 import {Layout} from 'antd';
 import '../../style/index.less';
-
 import SiderCustom from './SiderCustom';
 import HeaderCustom from './HeaderCustom';
 import MIndex from '../index/Index';
-import Calendars from '../header/Calendars';
-import Echarts from '../chart/echarts/Echarts';
-import UForm from '../form/Form';
 import noMatch from './404';
+import Categoryadd from '../shop/categoryadd';
 
 const {Content, Footer} = Layout;
 
@@ -37,7 +34,7 @@ export default class App extends Component {
         const {location} = this.props;
         let name;
         if (localStorage.getItem("mspa_user") === null) {
-            return <Redirect to="/login"/>
+            /*return <Redirect to="/login"/>*/
         } else {
             name = "administrtor";
         }
@@ -50,9 +47,7 @@ export default class App extends Component {
                     <Content style={{margin: '0 16px'}}>
                         <Switch>
                             <Route exact path={'/app'} component={MIndex} />
-                            <Route exact path={'/app/form'} component={UForm} />
-                            <Route exact path={'/app/header/Calendars'} component={Calendars} />
-                            <Route exact path={'/app/chart/echarts'} component={Echarts} />
+                            <Route exact path={'/app/categoryadd'} component={Categoryadd} />
                             <Route component={noMatch} />
                         </Switch>
                     </Content>

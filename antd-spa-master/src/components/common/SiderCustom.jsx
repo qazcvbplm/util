@@ -67,12 +67,14 @@ export default class SiderCustom extends Component{
                     <Menu.Item key={"/app"}>
                         <Link to={"/app"}><Icon type="home" /><span>首页</span></Link>
                     </Menu.Item>
-                    <Menu.Item key={"/app/form"}>
-                        <Link to={"/app/form"}><Icon type="edit" /><span>表单</span></Link>
-                    </Menu.Item>
-                    <Menu.Item key="/app/chart/echarts">
+                    <SubMenu key="/app/categoryadd" title={<span><Icon type="user" />店铺管理</span>}>
+                       <Menu.Item key={"/app/categoryadd"}>
+                        <Link to={"/app/categoryadd"}><span>添加店铺分类</span></Link>
+                       </Menu.Item>
+                    </SubMenu>
+                  {/*  <Menu.Item key="/app/chart/echarts">
                         <Link to={'/app/chart/echarts'}><Icon type="area-chart" /><span>图表</span></Link>
-                    </Menu.Item>
+                    </Menu.Item>*/}
                 </Menu>
             </Sider>
         )
