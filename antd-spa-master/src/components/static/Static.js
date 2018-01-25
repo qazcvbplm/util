@@ -4,11 +4,13 @@ import createHistory from 'history/createBrowserHistory';
 const Static = {
    IP:'http://localhost/frame/',
    history:createHistory(),
-   request:function(url,callback){
+   school:null,
+   request:function(url,data,callback){
          $.ajax({
          	url:this.IP+url,
-         	method:'post',
+         	method:'POST',
          	dataType:'json',
+            data:data,
          	success:function(res){
                   callback(res);
          	}

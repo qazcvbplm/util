@@ -2,10 +2,9 @@ import React from 'react';
 import BreadcrumbCustom from '../common/BreadcrumbCustom';
 import {Form,Input,Row,Button,message} from 'antd';
 import Static from '../static/Static';
-import './shop.css';
 
 const FormItem = Form.Item;
-class Categoryadd extends React.Component {
+class Flooradd extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -16,7 +15,7 @@ class Categoryadd extends React.Component {
     submit(){
         let fields=this.props.form.getFieldsValue();
         if(fields.name){
-        	Static.request("/category/addshopcategory",{
+        	Static.request("/floor/add",{
                  name:fields.name,
                  schoolId:Static.school.sunwouId
         	},function(res){
@@ -27,7 +26,7 @@ class Categoryadd extends React.Component {
                 }
         	});
         }else{
-			message.error('请输入分类名字');
+			message.error('请输入名字');
         }
     };
 	render() {
@@ -38,13 +37,13 @@ class Categoryadd extends React.Component {
 		    };
 		return (
 			<div >
-			  <BreadcrumbCustom paths={['首页','店铺管理','添加店铺分类']}/>
+			  <BreadcrumbCustom paths={['首页','店铺管理','添加楼栋']}/>
 			  <Form className="form">
 			     <Row align="middle">
-	                   <FormItem label="分类名字"
+	                   <FormItem label="楼栋名字"
 	                   	{...formItemLayout}
 				        >
-				          {getFieldDecorator('name')(<Input placeholder="分类名字" />)}
+				          {getFieldDecorator('name')(<Input placeholder="楼栋名字" />)}
 				        </FormItem>
 			     </Row> 
 			     <Row align="middle">
@@ -57,6 +56,6 @@ class Categoryadd extends React.Component {
 		);
 	}
 }
-Categoryadd = Form.create()(Categoryadd);
+Flooradd = Form.create()(Flooradd);
 
-export default Categoryadd;
+export default Flooradd;

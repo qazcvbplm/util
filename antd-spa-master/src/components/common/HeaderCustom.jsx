@@ -11,7 +11,6 @@ export default class HeaderCustom extends Component{
         this.state = {
             collapsed: props.collapsed,
         }
-        this.logout = this.logout.bind(this);
     }
     componentWillReceiveProps(nextProps) {
         //console.log(nextProps);
@@ -22,10 +21,6 @@ export default class HeaderCustom extends Component{
             collapsed,
         });
     };
-    logout(){
-        localStorage.removeItem("mspa_user");
-        /*history.push('/login');*/
-    }
     render(){
         return(
             <Header style={{ background: '#fff', padding: 0 }} className="header">
@@ -39,20 +34,18 @@ export default class HeaderCustom extends Component{
                     style={{ lineHeight: '64px', float: 'right' }}
                 >
                     <Menu.Item key="schedule">
-                        <Link to="/app/header/Calendars">
+                        <Link to="/app">
                             <Badge count={3} overflowCount={99} style={{height:'15px',lineHeight:'15px'}}>
-                                <Icon type="schedule" style={{fontSize:16, color: '#1DA57A' }}/>
+                                <Icon type="schedule" style={{fontSize:16, color: '#1DA57A' }}/>待处理订单
                             </Badge>
                         </Link>
                     </Menu.Item>
                     <SubMenu 
                         title={<span>
-                            <Icon type="user" style={{fontSize:16, color: '#1DA57A' }}/>{this.props.username}
+                            <Icon type="user" style={{fontSize:16, color: '#1DA57A' }}/>
+                            {this.props.username}
                         </span>}
                         >
-                        <Menu.Item key="logout" style={{textAlign:'center'}} className="logout">
-                            <span onClick={this.logout}>logout</span>
-                        </Menu.Item>
                     </SubMenu>
                 </Menu>
             </Header>

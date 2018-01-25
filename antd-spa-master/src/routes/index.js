@@ -4,7 +4,7 @@ import Static from '../components/static/Static';
 import Home from '../components/common/home';
 import App from '../components/common/App';
 import NoMatch from '../components/common/404';
-
+import Login from '../components/login/Login';
 
 class MRoute extends Component {
   render() {
@@ -13,6 +13,7 @@ class MRoute extends Component {
         <Switch>
           <Route exact path="/" component={Home}/>
           <Route  path="/app" component={App}/>
+          <Route  path="/login" component={Login}/>
           <Route component={NoMatch}/>
         </Switch>
       </Router>

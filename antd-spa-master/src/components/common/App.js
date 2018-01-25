@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Route, Switch} from 'react-router-dom';
+import {Route, Switch,Redirect} from 'react-router-dom';
 import {Layout} from 'antd';
 import '../../style/index.less';
 import SiderCustom from './SiderCustom';
@@ -7,7 +7,11 @@ import HeaderCustom from './HeaderCustom';
 import MIndex from '../index/Index';
 import noMatch from './404';
 import Categoryadd from '../shop/categoryadd';
-
+import Userlist from '../user/userlist';
+import Categorylist from '../shop/categorylist';
+import Static from '../static/Static';
+import Flooradd from '../floor/flooradd'
+import Floorlist from '../floor/floorlist'
 const {Content, Footer} = Layout;
 
 export default class App extends Component {
@@ -33,12 +37,12 @@ export default class App extends Component {
         const {collapsed} = this.state;
         const {location} = this.props;
         let name;
-        if (localStorage.getItem("mspa_user") === null) {
-            /*return <Redirect to="/login"/>*/
+        if (Static.school === null) {
+            return <Redirect to="/login"/>
         } else {
-            name = "administrtor";
+            name = Static.school.schoolName;
         }
-
+       
         return (
             <Layout className="ant-layout-has-sider" style={{height: '100%'}}>
                 <SiderCustom collapsed={collapsed} path={location.pathname}/>
@@ -48,6 +52,10 @@ export default class App extends Component {
                         <Switch>
                             <Route exact path={'/app'} component={MIndex} />
                             <Route exact path={'/app/categoryadd'} component={Categoryadd} />
+                            <Route exact path={'/app/userlist'} component={Userlist} />
+                            <Route exact path={'/app/categorylist'} component={Categorylist} />
+                            <Route exact path={'/app/flooradd'} component={Flooradd} />
+                            <Route exact path={'/app/floorlist'} component={Floorlist} />
                             <Route component={noMatch} />
                         </Switch>
                     </Content>
