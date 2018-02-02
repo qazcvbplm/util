@@ -4,24 +4,6 @@ import { Form, Icon, Input, Button, Checkbox, message, Spin } from 'antd';
 import Static from '../static/Static';
 const FormItem = Form.Item;
 
-const login = [{
-    username:'admin',
-    password:'admin'
-},{
-    username:'zysoft',
-    password:'zysoft'
-}];
-
-function PatchUser(values) {  //匹配用户
-    let isOk = 0;
-    login.map(function(item){
-        if(values.username === item.username && values.password === item.password){
-            return isOk || 1;
-        }else{
-            return isOk || 0;
-        }
-    });
-};
 
 class NormalLoginForm extends Component {
     state = {
@@ -85,7 +67,6 @@ class NormalLoginForm extends Component {
                            {/* Or <a href="">现在就去注册!</a>*/}
                         </FormItem>
                     </Form>
-                    <a className="githubUrl" href="https://github.com/zhaoyu69/antd-spa"> </a>
                 </div>
             </div>
         );

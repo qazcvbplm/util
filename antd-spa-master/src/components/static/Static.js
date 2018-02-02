@@ -1,8 +1,12 @@
 import $ from 'jquery';
 import createHistory from 'history/createBrowserHistory';
 
+const IP='http://tzhop.free.ngrok.cc/';
+const FileIP='http://www.wojush.com/';
 const Static = {
-   IP:'http://localhost/frame/',
+   ImageIP:FileIP,
+   IP:IP+'/frame/',
+   FileIP:FileIP+'/frame/',
    history:createHistory(),
    school:null,
    request:function(url,data,callback){

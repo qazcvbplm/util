@@ -1,16 +1,16 @@
 import React from 'react';
-import {Table,Button,Icon,Modal,message} from 'antd';
+import {Table,Button,Icon,Modal,message,Avatar,Tag,Spin} from 'antd';
 import BreadcrumbCustom from '../common/BreadcrumbCustom';
 import Static from '../static/Static';
-import Categoryupdate from './categoryupdate';
-export default class Categorylist extends React.Component {
+import Productadd from './productadd';
+export default class Productlist extends React.Component {
 	constructor(props) {
 		super(props);
 		 this.state={
               	data:[],
               	query:{
               		wheres:[
-              		{value:'type',opertionType:'equal',opertionValue:this.props.location.query.type},
+              		{value:'categoryId',opertionType:'equal',opertionValue:props.location.query.categoryId},
               		{value:'isDelete',opertionType:'equal',opertionValue:false}
               		],
               		pages:{currentPage:1,size:10}
@@ -19,16 +19,20 @@ export default class Categorylist extends React.Component {
                 deletevisible:false,
                 updatevisible:false,
                 refresh:false,
-                key:0
+                key:0,
+                show:null,
+                loading:false,
+                categoryId:props.location.query.categoryId
           }
           this.getData();
 	};
     getData(){
          let that=this;
-		Static.request('category/find',{query:JSON.stringify(that.state.query)},function(res){
+		Static.request('product/find',{query:JSON.stringify(that.state.query)},function(res){
                that.setState({
-               	   data:res.params.categorys,
-               	   total:res.params.total
+               	   data:res.params.products,
+               	   total:res.params.total,
+                   loading:false
                })
 		});
     };
@@ -48,53 +52,82 @@ export default class Categorylist extends React.Component {
         });
    };
    showModal(name,record){
-       if(name==='delete'){
-        this.setState({
-          deletevisible:true,
-          temp:record
-        })
+       let show;
+       if(name==='add'){
+            show=<Productadd  categoryId={this.state.categoryId} />
        }
        if(name==='update'){
-        this.setState({
-          updatevisible:true,
-          temp:record,
-          key:this.state.key+1
-        })
+        show=<Productadd  categoryId={this.state.categoryId}  params={record}/>
        }
+
+       this.setState({
+        show:show,
+        key:this.state.key+1,
+        updatevisible:true,
+       })
    };
-   delete(){
-       Static.request("/category/update",{sunwouId:this.state.temp.sunwouId,
+   delete(record){
+    let that=this;
+    this.setState({loading:true})
+       Static.request("/product/update",{sunwouId:record.sunwouId,
         isDelete:true},function(res){
               if(res.code){
                    message.success("删除成功");
               }
+              that.getData();
         });
+
    };
 	render() {
     const that=this;
 		const columns = [{
-			  title: '分类名字',
+			  title: '图片',
+			  render: (text, record) => (
+			   <Avatar alt="图片" size="large" src={record.image} />
+			  ),
+			  key: 'avatarUrl',
+			},{
+			  title: '商品名字',
 			  key: 'name',
 			 dataIndex:'name'
+			},{
+			  title: '商品折扣',
+			  key: 'discount',
+			 dataIndex:'discount'
+			},{
+			  title: '商品销量',
+			  key: 'sales',
+			 dataIndex:'sales'
+			},{
+			  title: '餐盒费',
+			  key: 'boxFlag',
+			  render(text, record){
+               if(record.boxFlag){
+                return <Tag color="green">需要</Tag>;
+               }else{
+                return <Tag color="red">不需要</Tag>;
+               }
+        },
 			},{
 			  title: '操作',
 			  key: '1',
 			 render:function(text,record,index){
                  return  <div>
                  <Button type="primary" onClick={that.showModal.bind(that,'update',record)}><Icon type="edit" />编辑</Button>&nbsp;
-                 <Button type="danger"  onClick={that.showModal.bind(that,'delete',record)}><Icon type="delete" />删除</Button>
+                 <Button type="danger"  onClick={that.delete.bind(that,record)}><Icon type="delete" />删除</Button>
                  </div>
 			 }
 			}];
 		return (
 			<div >
-        <Modal
+       <Spin spinning={this.state.loading} size="large">
+{/*        <Modal
           title="是否确定删除"
           visible={this.state.deletevisible}
           onOk={this.delete.bind(that)}
           onCancel={this.handleCancel.bind(that)}
         >
-        </Modal>
+        </Modal>*/}
         <Modal
           key={this.state.key}
           title="编辑"
@@ -102,9 +135,12 @@ export default class Categorylist extends React.Component {
            onCancel={this.handleCancel.bind(that)}
           footer={null}
         >
-        <Categoryupdate type={this.state.temp} />
+        {this.state.show}
         </Modal>
-			    <BreadcrumbCustom paths={['首页','用户管理','店铺分类列表']}/>
+			    <BreadcrumbCustom paths={['首页','店铺管理','商品列表']}/>
+          <div className="form">
+          <Button onClick={this.showModal.bind(this,'add')} type="primary" ><span><Icon type="plus" /></span></Button>
+          <h1></h1>
 				<Table  pagination={{
                     pageSize:this.state.query.pages.size,
                     total:this.state.total,
@@ -122,7 +158,8 @@ export default class Categorylist extends React.Component {
 			        }.bind(this)
 				}}
 				 rowKey="sunwouId" className="container"  columns={columns}  dataSource={this.state.data}></Table>
-				
+				 </div>
+         </Spin>
 			</div>
 		);
 	}

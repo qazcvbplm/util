@@ -2,7 +2,7 @@ import React from 'react';
 import {Table,Button,Icon,message,Modal} from 'antd';
 import BreadcrumbCustom from '../common/BreadcrumbCustom';
 import Static from '../static/Static';
-
+import Floorupdate from './floorupdate';
 export default class Floorlist extends React.Component {
 	constructor(props) {
 		super(props);
@@ -15,7 +15,9 @@ export default class Floorlist extends React.Component {
               		],
               		pages:{currentPage:1,size:10}},
               	total:0,
-              	deletevisible:false
+              	deletevisible:false,
+                updatevisible:false,
+                key:0,
           }
           this.getData();
 	  }; 
@@ -39,22 +41,29 @@ export default class Floorlist extends React.Component {
     handleCancel(e){
 	    this.setState({
 	      deletevisible: false,
+        updatevisible:false,
 	    });
+      this.getData();
     };
    showModal(name,record){
-       if(name=='delete'){
+       if(name==='delete'){
         this.setState({
           deletevisible:true,
           temp:record
         })
        }
+       if(name==='update'){
+        this.setState({
+          updatevisible:true,
+          temp:record,
+          key:this.state.key+1
+        })
+       }
     };
    delete(){
-    let that=this;
        Static.request("/floor/update",{sunwouId:this.state.temp.sunwouId,
         isDelete:true},function(res){
-              if(res.code){
-                   that.getData();
+              if(res.code){  
                    message.success("删除成功");
               }
         });
@@ -70,7 +79,7 @@ export default class Floorlist extends React.Component {
 			  key: '1',
 			 render:function(text,record,index){
                  return  <div>
-                 <Button type="primary"><Icon type="edit" />编辑</Button>&nbsp;
+                 <Button type="primary"onClick={that.showModal.bind(that,'update',record)}><Icon type="edit" />编辑</Button>&nbsp;
                  <Button type="danger"  onClick={that.showModal.bind(that,'delete',record)} ><Icon type="delete" />删除</Button>
                  </div>
 			 }
@@ -84,7 +93,16 @@ export default class Floorlist extends React.Component {
 			          onOk={this.delete.bind(that)}
 			          onCancel={this.handleCancel.bind(that)}
 			        >
-			        </Modal>	
+			        </Modal>
+              <Modal
+              key={this.state.key}
+                title="编辑"
+                visible={this.state.updatevisible}
+                onCancel={this.handleCancel.bind(that)}
+                footer={null}
+              >
+              <Floorupdate type={this.state.temp} />
+              </Modal>  	
 			    <BreadcrumbCustom paths={['首页','用户管理','楼栋列表']}/>
 				<Table  pagination={{
                     pageSize:this.state.query.pages.size,

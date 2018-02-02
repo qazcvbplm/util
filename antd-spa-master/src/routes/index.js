@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
 import Static from '../components/static/Static';
 import Home from '../components/common/home';
-import App from '../components/common/App';
+import App from '../components/app/App';
 import NoMatch from '../components/common/404';
 import Login from '../components/login/Login';
 

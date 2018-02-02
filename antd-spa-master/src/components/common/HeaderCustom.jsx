@@ -35,8 +35,8 @@ export default class HeaderCustom extends Component{
                 >
                     <Menu.Item key="schedule">
                         <Link to="/app">
-                            <Badge count={3} overflowCount={99} style={{height:'15px',lineHeight:'15px'}}>
-                                <Icon type="schedule" style={{fontSize:16, color: '#1DA57A' }}/>待处理订单
+                            <Badge count={1} overflowCount={99} >
+                            <Icon type="schedule" style={{fontSize:16, color: '#1DA57A' }}/>待处理订单
                             </Badge>
                         </Link>
                     </Menu.Item>

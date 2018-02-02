@@ -83,6 +83,12 @@ export default class SiderCustom extends Component{
                        <Menu.Item key={"/app/categorylist"}>
                         <Link to={{pathname:"/app/categorylist",query:{type:'店铺分类'}}}><span>查看店铺分类</span></Link>
                          </Menu.Item>
+                          <Menu.Item key={"/app/shopadd"}>
+                        <Link to={{pathname:"/app/shopadd"}}><span>添加店铺</span></Link>
+                         </Menu.Item>
+                          <Menu.Item key={"/app/shoplist"}>
+                        <Link to={{pathname:"/app/shoplist"}}><span>店铺列表</span></Link>
+                         </Menu.Item>
                     </SubMenu>
                     <SubMenu key="/app/user" title={<span><Icon type="user" />用户管理</span>}>
                        <Menu.Item key={"/app/userlist"}>
