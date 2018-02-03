@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table,Button,Icon,Modal,message,Avatar,Tag,Spin} from 'antd';
+import {Table,Button,Icon,Modal,message,Avatar,Tag,Input,Divider} from 'antd';
 import BreadcrumbCustom from '../common/BreadcrumbCustom';
 import Static from '../static/Static';
 import Productadd from './productadd';
@@ -21,7 +21,6 @@ export default class Productlist extends React.Component {
                 refresh:false,
                 key:0,
                 show:null,
-                loading:false,
                 categoryId:props.location.query.categoryId
           }
           this.getData();
@@ -32,17 +31,18 @@ export default class Productlist extends React.Component {
                that.setState({
                	   data:res.params.products,
                	   total:res.params.total,
-                   loading:false
                })
+               Static.hideLoading();
 		});
     };
     search(e){
-         this.state.search=e.target.value;
+         this.setState({search:e.target.value});
     };
     onSearch(name){
-    	let obj=[{value:name,opertionType:'like',opertionValue:this.state.search}];
- 		this.state.query.wheres=obj;
- 		this.getData();
+      	let query=this.state.query;
+        query.wheres=[{value:name,opertionType:'like',opertionValue:this.state.search}];
+        this.setState({query:query});
+        this.getData();
     };
     handleCancel(e){
       this.getData();
@@ -68,7 +68,7 @@ export default class Productlist extends React.Component {
    };
    delete(record){
     let that=this;
-    this.setState({loading:true})
+    Static.Loading();
        Static.request("/product/update",{sunwouId:record.sunwouId,
         isDelete:true},function(res){
               if(res.code){
@@ -89,11 +89,23 @@ export default class Productlist extends React.Component {
 			},{
 			  title: '商品名字',
 			  key: 'name',
-			 dataIndex:'name'
+			 dataIndex:'name',
+       filterDropdown: (
+            <div className="custom-filter-dropdown">
+              <Input
+                placeholder="Search"
+                onChange={this.search.bind(this)}
+              />
+              <Button type="primary" onClick={this.onSearch.bind(this,"name")}>Search</Button>
+            </div>
+          ),
 			},{
 			  title: '商品折扣',
 			  key: 'discount',
-			 dataIndex:'discount'
+			 dataIndex:'discount',
+       render: (text, record) => (
+           text*100+'%'
+        ),
 			},{
 			  title: '商品销量',
 			  key: 'sales',
@@ -120,7 +132,6 @@ export default class Productlist extends React.Component {
 			}];
 		return (
 			<div >
-       <Spin spinning={this.state.loading} size="large">
 {/*        <Modal
           title="是否确定删除"
           visible={this.state.deletevisible}
@@ -140,7 +151,7 @@ export default class Productlist extends React.Component {
 			    <BreadcrumbCustom paths={['首页','店铺管理','商品列表']}/>
           <div className="form">
           <Button onClick={this.showModal.bind(this,'add')} type="primary" ><span><Icon type="plus" /></span></Button>
-          <h1></h1>
+          <Divider />
 				<Table  pagination={{
                     pageSize:this.state.query.pages.size,
                     total:this.state.total,
@@ -159,7 +170,6 @@ export default class Productlist extends React.Component {
 				}}
 				 rowKey="sunwouId" className="container"  columns={columns}  dataSource={this.state.data}></Table>
 				 </div>
-         </Spin>
 			</div>
 		);
 	}

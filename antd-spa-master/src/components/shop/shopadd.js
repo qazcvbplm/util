@@ -18,6 +18,7 @@ class Shopadd extends React.Component {
 			shop=props.params;
 			shop.fullCutRate*=100;
 			shop.productDiscountRate*=100;
+			shop.rate*=100;
 			fileList=[];
 			fromclass='';	
 			fileList.push({
@@ -42,6 +43,7 @@ class Shopadd extends React.Component {
                 sendTime:0,
                 fullCutRate:100,
                 productDiscountRate:100,
+                rate:10,
                 sales:0,
                 topTitle:'',
                 address:'',
@@ -74,6 +76,7 @@ class Shopadd extends React.Component {
 		});
 	};
     submit(){
+    	Static.Loading();
 		let fields=this.props.form.getFieldsValue();
         fields.schoolId=Static.school.sunwouId;
         let url='';
@@ -90,21 +93,20 @@ class Shopadd extends React.Component {
                 }else{
                 	message.error(res.msg);
                 }
+                Static.hideLoading();
         })
     };
     fileup(e){
+    	let shop=this.state.shop;
         if(e.file.status==='done'){
-        	this.state.shop.shopImage=Static.ImageIP+e.file.response.params.path;
-        	this.setState({
-               shop:this.state.shop,
-        	})
+        	shop.shopImage=Static.ImageIP+e.file.response.params.path;
         }
         if(e.file.status==='removed'){
-        	this.state.shop.shopImage='',
-        	this.setState({
-               shop:this.state.shop,
-        	})
+        	shop.shopImage='';
         }
+        this.setState({
+               shop:shop,
+        	})
     };
 	render() {
 		const { getFieldDecorator} = this.props.form;
@@ -236,6 +238,13 @@ class Shopadd extends React.Component {
 	                   	{...formItemLayout}
 				        >
 				          {getFieldDecorator('productDiscountRate',{initialValue:this.state.shop.productDiscountRate})( <InputNumber formatter={value => `${value}%`} min={0} max={100}  />)}
+				        </FormItem>
+			     </Row>
+			      <Row align="middle">
+	                   <FormItem label="对商家抽成"
+	                   	{...formItemLayout}
+				        >
+				          {getFieldDecorator('rate',{initialValue:this.state.shop.rate})( <InputNumber formatter={value => `${value}%`} min={0} max={100}  />)}
 				        </FormItem>
 			     </Row>
 			     <Row align="middle">

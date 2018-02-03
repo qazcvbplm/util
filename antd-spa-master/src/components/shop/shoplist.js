@@ -34,11 +34,12 @@ export default class Shoplist extends React.Component {
 		});
     };
     search(e){
-         this.state.search=e.target.value;
+         this.setState({search:e.target.value});
     };
     onSearch(name){
-    	let obj=[{value:name,opertionType:'like',opertionValue:this.state.search}];
- 		this.state.query.wheres=obj;
+    	let query=this.state.query;
+    	query.wheres=[{value:name,opertionType:'like',opertionValue:this.state.search}];
+ 		this.setState({query:query});
  		this.getData();
     };
     dropdownclick(record){
@@ -50,12 +51,9 @@ export default class Shoplist extends React.Component {
                show=<Shopadd  params={this.state.opertion}/>;
     	}
     	if(e.key==='2'){
-           Static.history.push({pathname:'/app/category',query:{
-           	type:'商品分类',
-           	shopId:this.state.opertion.sunwouId,
-           	url:'/category',
-           	add:'/addproductcategory'
-           }});
+    	   let query={type:'商品分类',shopId:this.state.opertion.sunwouId,url:'/category',add:'/addproductcategory'};
+    	   localStorage.setItem('category',JSON.stringify(query));
+           Static.history.push({pathname:'/app/category'});
     	}
     	if(e.key==='3'){
     		show=<Opentime url='shop/opentime' shopId={this.state.opertion.sunwouId}/>
@@ -133,6 +131,27 @@ export default class Shoplist extends React.Component {
 			  title: '配送费',
 			  key: 'sendPrice',
 			  dataIndex:'sendPrice'
+			},{
+			  title: '满减商家承担',
+			  key: 'fullCutRate',
+			  dataIndex:'fullCutRate',
+			  render(text, record) {
+			    return record.fullCutRate*100+'%';
+			  },
+			},{
+			  title: '商品折扣承担',
+			  key: 'productDiscountRate',
+			  dataIndex:'productDiscountRate',
+			  render(text, record) {
+			    return record.productDiscountRate*100+'%';
+			  },
+			},{
+			  title: '抽成',
+			  key: 'rate',
+			  dataIndex:'rate',
+			  render(text, record) {
+			    return record.rate*100+'%';
+			  },
 			},{
 			  title: '配送模式',
 			  key: 'sendMode',

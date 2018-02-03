@@ -26,11 +26,12 @@ export default class Userlist extends React.Component {
 		});
     };
     search(e){
-         this.state.search=e.target.value;
+         this.setState({search:e.target.value});
     };
     onSearch(name){
-    	let obj=[{value:name,opertionType:'like',opertionValue:this.state.search}];
- 		this.state.query.wheres=obj;
+    	let query=this.state.query;
+    	query.wheres=[{value:name,opertionType:'like',opertionValue:this.state.search}];
+ 		this.setState({query:query});
  		this.getData();
     };
     pageChange(){

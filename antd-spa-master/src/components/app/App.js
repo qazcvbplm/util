@@ -1,26 +1,36 @@
 import React, {Component} from 'react';
 import {Route, Switch,Redirect} from 'react-router-dom';
-import {Layout} from 'antd';
+import {Layout,Spin} from 'antd';
 import '../../style/index.less';
 import SiderCustom from '../common/SiderCustom';
 import HeaderCustom from '../common/HeaderCustom';
 import MIndex from '../index/Index';
 import noMatch from '../common/404';
-import Categoryadd from '../shop/categoryadd';
 import Userlist from '../user/userlist';
 import Categorylist from '../shop/categorylist';
 import Static from '../static/Static';
-import Flooradd from '../floor/flooradd';
 import Floorlist from '../floor/floorlist';
 import Shopadd from '../shop/shopadd';
 import Shoplist from '../shop/shoplist';
 import Category from '../shop/category';
 import Productlist from '../product/productlist';
+import Schoolconfig from '../schoolconfig/schoolconfig';
 const {Content, Footer} = Layout;
 
+
+
+
 export default class App extends Component {
+     
+      constructor(props) {
+        super(props);
+        Static.app=this;
+    }
+
+
     state = {
         collapsed: localStorage.getItem("mspa_SiderCollapsed") === "true",
+        loading:false
     };
     toggle = () => {
         this.setState({
@@ -53,19 +63,20 @@ export default class App extends Component {
                 <Layout>
                     <HeaderCustom collapsed={collapsed} toggle={this.toggle} username={name}/>
                     <Content style={{margin: '0 16px'}}>
-                        <Switch>
+                     <Spin spinning={this.state.loading} size="large">
+                        <Switch>  
                             <Route exact path={'/app'} component={MIndex} />
-                            <Route exact path={'/app/categoryadd'} component={Categoryadd} />
                             <Route exact path={'/app/userlist'} component={Userlist} />
                             <Route exact path={'/app/categorylist'} component={Categorylist} />
                             <Route exact path={'/app/category'} component={Category} />
-                            <Route exact path={'/app/flooradd'} component={Flooradd} />
                             <Route exact path={'/app/floorlist'} component={Floorlist} />
                             <Route exact path={'/app/shopadd'} component={Shopadd} />
                             <Route exact path={'/app/shoplist'} component={Shoplist} />
                              <Route exact path={'/app/productlist'} component={Productlist} />
+                              <Route exact path={'/app/schoolconfig'} component={Schoolconfig} />
                             <Route component={noMatch} />
                         </Switch>
+                         </Spin>
                     </Content>
                     <Footer style={{textAlign: 'center'}}>
                         react-antd ©2017 Created by sunwou

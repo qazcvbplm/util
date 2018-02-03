@@ -5,10 +5,11 @@ import BreadcrumbCustom from '../common/BreadcrumbCustom';
 export default class Category extends React.Component {
 	constructor(props) {
 		super(props);
-		let url=this.props.location.query.url;
-		let type=this.props.location.query.type;
-		let shopId=this.props.location.query.shopId;
-    let add=this.props.location.query.add;
+    let query=JSON.parse(localStorage.getItem('category'));
+		let url=query.url;
+		let type=query.type;
+		let shopId=query.shopId;
+    let add=query.add;
 		 this.state={
               	data:[],
                 url:url,

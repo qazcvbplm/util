@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table,Button,Icon,message,Modal} from 'antd';
+import {Table,Button,Icon,message,Modal,Row,Col,Input,Divider} from 'antd';
 import BreadcrumbCustom from '../common/BreadcrumbCustom';
 import Static from '../static/Static';
 import Floorupdate from './floorupdate';
@@ -18,6 +18,7 @@ export default class Floorlist extends React.Component {
               	deletevisible:false,
                 updatevisible:false,
                 key:0,
+                name:'',
           }
           this.getData();
 	  }; 
@@ -31,12 +32,13 @@ export default class Floorlist extends React.Component {
     		});
     };
     search(e){
-         this.state.search=e.target.value;
+         this.setState({search:e.target.value});
     };
     onSearch(name){
-    	let obj=[{value:name,opertionType:'like',opertionValue:this.state.search}];
-   		this.state.query.wheres=obj;
-   		this.getData();
+    	let query=this.state.query;
+      query.wheres=[{value:name,opertionType:'like',opertionValue:this.state.search}];
+      this.setState({query:query});
+      this.getData();
     };
     handleCancel(e){
 	    this.setState({
@@ -67,6 +69,25 @@ export default class Floorlist extends React.Component {
                    message.success("删除成功");
               }
         });
+   };
+   nameInput(e){
+         this.setState({name:e.target.value})
+   };
+   add(){
+    let that=this;
+    Static.Loading();
+          Static.request("/floor/add",{
+                 name:that.state.name,
+                 schoolId:Static.school.sunwouId
+          },function(res){
+                if(res.code){
+                      message.success('添加成功')
+                }else{
+                  message.error('添加失败请重试')
+                }
+                 that.getData();
+                Static.hideLoading();
+          });
    };
 	render() {
     const that=this;
@@ -104,6 +125,13 @@ export default class Floorlist extends React.Component {
               <Floorupdate type={this.state.temp} />
               </Modal>  	
 			    <BreadcrumbCustom paths={['首页','用户管理','楼栋列表']}/>
+          <div className="form">
+           <Row>
+                    <Col span={2}>楼栋名：</Col> 
+                    <Col span={6}><Input onChange={this.nameInput.bind(this)}  /></Col>           
+                    <Col offset={1} span={10}><Button type="primary" onClick={this.add.bind(this)}>添加</Button></Col>
+            </Row>
+           <Divider />
 				<Table  pagination={{
                     pageSize:this.state.query.pages.size,
                     total:this.state.total,
@@ -121,7 +149,7 @@ export default class Floorlist extends React.Component {
 			        }.bind(this)
 				}}
 				 rowKey="sunwouId" className="container"  columns={columns}  dataSource={this.state.data}></Table>
-				
+				 </div>
 			</div>
 		);
 	}

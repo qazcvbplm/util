@@ -69,17 +69,11 @@ export default class SiderCustom extends Component{
                         <Link to={"/app"}><Icon type="home" /><span>首页</span></Link>
                     </Menu.Item>
                     <SubMenu key="/app/floor" title={<span><Icon type="user" />楼栋管理</span>}>
-                       <Menu.Item key={"/app/flooradd"}>
-                        <Link to={"/app/flooradd"}><span>添加楼栋</span></Link>
-                       </Menu.Item>
                        <Menu.Item key={"/app/floorlist"}>
                        <Link to={"/app/floorlist"}><span>查看楼栋</span></Link>
                         </Menu.Item>
                     </SubMenu>
                     <SubMenu key="/app/categoryadd" title={<span><Icon type="edit" />店铺管理</span>}>
-                       <Menu.Item key={"/app/categoryadd"}>
-                        <Link to={"/app/categoryadd"}><span>添加店铺分类</span></Link>
-                       </Menu.Item>
                        <Menu.Item key={"/app/categorylist"}>
                         <Link to={{pathname:"/app/categorylist",query:{type:'店铺分类'}}}><span>查看店铺分类</span></Link>
                          </Menu.Item>
@@ -95,6 +89,9 @@ export default class SiderCustom extends Component{
                         <Link to={"/app/userlist"}><span>用户列表</span></Link>
                        </Menu.Item>
                     </SubMenu>
+                    <Menu.Item key={"/app/schoolconfig"}>
+                        <Link to={"/app/schoolconfig"}><Icon type="home" /><span>学校配置</span></Link>
+                    </Menu.Item>
                 </Menu>
             </Sider>
         )

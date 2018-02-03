@@ -1,6 +1,6 @@
 import React from 'react';
 import BreadcrumbCustom from '../common/BreadcrumbCustom';
-import {Form,Input,Row,Button,message,Switch,Upload,Icon,InputNumber,List,Col,Divider,Spin} from 'antd';
+import {Form,Input,Row,Button,message,Switch,Upload,Icon,InputNumber,List,Col,Spin} from 'antd';
 import Static from '../static/Static';
 const FormItem = Form.Item;
 class Productadd extends React.Component {
@@ -69,19 +69,16 @@ class Productadd extends React.Component {
         })
     };
     fileup(e){
+    	let shop=this.state.shop;
         if(e.file.status==='done'){
-        	let fields=this.props.form.getFieldsValue();
-        	this.state.shop.image=Static.ImageIP+e.file.response.params.path;
-        	this.setState({
-               shop:this.state.shop,
-        	})
+        	shop.image=Static.ImageIP+e.file.response.params.path;
         }
         if(e.file.status==='removed'){
-        	this.state.shop.image='',
-        	this.setState({
-               shop:this.state.shop,
-        	})
+        	shop.image='';
         }
+          this.setState({
+               shop:shop,
+        	})
     };
     attName(e){
        this.setState({attName:e.target.value});
