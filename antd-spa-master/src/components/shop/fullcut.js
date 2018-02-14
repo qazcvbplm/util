@@ -39,7 +39,9 @@ export default class Fullcut extends React.Component {
               if(res.code){
                    message.success("删除成功");
               }
+               that.getData();
         });
+
    };
    full(e){
          this.setState({

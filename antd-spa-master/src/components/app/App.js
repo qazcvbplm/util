@@ -15,6 +15,8 @@ import Shoplist from '../shop/shoplist';
 import Category from '../shop/category';
 import Productlist from '../product/productlist';
 import Schoolconfig from '../schoolconfig/schoolconfig';
+import SenderList from '../apply/sender';
+import ShopApply from '../apply/shopapply';
 const {Content, Footer} = Layout;
 
 
@@ -74,6 +76,8 @@ export default class App extends Component {
                             <Route exact path={'/app/shoplist'} component={Shoplist} />
                              <Route exact path={'/app/productlist'} component={Productlist} />
                               <Route exact path={'/app/schoolconfig'} component={Schoolconfig} />
+                              <Route exact path={'/app/sender'} component={SenderList} />
+                               <Route exact path={'/app/shopapply'} component={ShopApply} />
                             <Route component={noMatch} />
                         </Switch>
                          </Spin>

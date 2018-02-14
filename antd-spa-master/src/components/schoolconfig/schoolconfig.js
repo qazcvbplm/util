@@ -17,9 +17,10 @@ class Schoolconfig extends React.Component {
         Static.Loading();
         	Static.request("/school/update",fields,function(res){
                 if(res.code){
-                      message.success('更新成功')
+                      message.success('更新成功');
+                      Static.school=res.params.school;
                 }else{
-                	message.error('更新失败请重试')
+                	message.error('更新失败请重试');
                 }
                 Static.hideLoading();
         	});

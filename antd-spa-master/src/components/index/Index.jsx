@@ -1,10 +1,10 @@
 import React, { Component } from 'react'; 
 import BreadcrumbCustom from '../common/BreadcrumbCustom';
-import { Card, Avatar, Row, Col, Progress, Timeline, Collapse, Table, Icon } from 'antd';
-import zysoft from '../../style/img/avatar.jpg';
+import { Card, Row, Col, Collapse} from 'antd';
 import './index.less';
 import CountUp from 'react-countup';
 import ReactEcharts from 'echarts-for-react';
+import Static from '../static/Static';
 const Panel = Collapse.Panel;
 const classify = [
     "社会",
@@ -22,72 +22,33 @@ const author = [
     " —— 伏尔泰"
 ];
 
-const columns = [
-    { title: '头像', width: 100, dataIndex: 'img', key: 'img', fixed: 'left' },
-    { title: '姓名', width: 100, dataIndex: 'name', key: 'name', fixed: 'left' },
-    { title: '状态', width: 80, dataIndex: 'state', key: 'state', fixed: 'left' },
-    { title: '留言', width: '62%', dataIndex: 'written', key: 'written', className:'column-written' },
-    { title: '邮箱', width: 200,dataIndex: 'mail', key: 'mail', fixed: 'right' },
-    { title: '时间', width: 200,dataIndex: 'time', key: 'time', fixed: 'right' }
-];
-const data = [{
-    key: '1',
-    img: <Avatar style={{ backgroundColor: '#f56a00' }}>Z</Avatar>,
-    name: 'John Brown',
-    state: <Icon type="caret-up" style={{ color: 'red' }}/>,
-    written: '撸起袖子加油干，中国梦定能实现！',
-    mail: 'marinus.jagesar@example.com',
-    time: '2015-03-01 17:55:21',
-}, {
-    key: '2',
-    img: <Avatar style={{ backgroundColor: '#7265e6' }}>H</Avatar>,
-    name: 'Jim Green',
-    state: <Icon type="caret-up" style={{ color: 'red' }}/>,
-    written: '只要坚持一切为了人民，共产党就始终有其活力。',
-    mail: 'zachary.lavigne@example.com',
-    time: '2015-06-03 18:22:13',
-},{
-    key: '3',
-    img: <Avatar style={{ backgroundColor: '#ffbf00' }}>A</Avatar>,
-    name: 'Joe Black',
-    state: <Icon type="caret-down" style={{ color: 'gray' }}/>,
-    written: '跟着党中央，百姓不心慌。跟着习核心，党民一家亲。',
-    mail:'levi.willis@example.com',
-    time: '2016-01-02 23:11:01',
-},{
-    key: '4',
-    img: <Avatar style={{ backgroundColor: '#00a2ae' }}>O</Avatar>,
-    name: 'Jim Red',
-    state:<Icon type="caret-up" style={{ color: 'red' }}/>,
-    written: '必须坚持改革创新、将改革进行到底！只有在改革中推动社会发展、在创新中找到科学发展之路！',
-    mail: 'tobias.pedersen@example.com',
-    time: '2016-12-21 13:03:59',
-},{
-    key: '5',
-    img: <Avatar style={{ backgroundColor: '#48ae6a' }}>Y</Avatar>,
-    name: 'Jake White',
-    state: <Icon type="caret-down" style={{ color: 'gray' }}/>,
-    written: '在各领域凝心聚力齐心协力集聚改革发展的正能量。',
-    mail: 'lígio.carvalho@example.com',
-    time: '2017-03-06 10:19:07',
-},{
-    key: '6',
-    img: <Avatar style={{ backgroundColor: '#ae007c' }}>U</Avatar>,
-    name: 'Smith White',
-    state: <Icon type="caret-up" style={{ color: 'red' }}/>,
-    written: '对“为官不为”及时亮剑，集中曝光、整治“为官不为”“为官乱为”，使无为者让位、干事者有位。',
-    mail: 'samuel.leon@example.com',
-    time: '2017-11-03 13:43:33',
-}];
+let that;
 
 export default class MIndex extends Component {
-    /*constructor(props) {
+    constructor(props) {
          super(props);
-    }*/
+         this.state={
+            count:[0,0,0,0]
+         }
+         that=this;
+         that.init();
+    };
+    init(){
+        Static.Loading();
+           Static.request('/statistics/schoolindex',{
+            schoolId:Static.school.sunwouId
+           },function(res){
+              let temp=res.params; 
+                 that.setState({
+                   count:[temp.userActiveCount,temp.orderNumber,temp.schoolToDayTransactionMoney,temp.schoolMoney]
+                 })
+                 Static.hideLoading();
+           });
+    };
     CountUp(){
         let imgSrc = ["mail","chat","cart","heart"];
-        let imgName = ["新用户","新会员","订单数","营业额"];
-        let count = ["1379","768","192","413"];
+        let imgName = ["活跃用户","订单数","交易额","余额"];
+        let count = that.state.count;
         let cu = imgSrc.map(function(item,index){
             return(
                 <Col md={6} key={item}>
@@ -104,13 +65,13 @@ export default class MIndex extends Component {
             )
         });
         return cu;
-    }
+    };
     getOption(){
         let option = {
             backgroundColor: "#fff",
             color: ['rgb(216, 151, 235)', 'rgb(246, 152, 153)', 'rgb(100, 234, 145)'],
             title: [{
-                text: '账单/元',
+                text: '账单/数量',
                 left: '2%',
                 top: '6%',
                 textStyle: {
@@ -131,7 +92,7 @@ export default class MIndex extends Component {
                 textStyle: {
                     color: 'gray',
                 },
-                data: ['外卖', '跑腿','会员']
+                data: ['外卖', '堂食']
             },
             xAxis: {
                 type: 'category',
@@ -147,7 +108,7 @@ export default class MIndex extends Component {
                 data: ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日']
             },
             yAxis: {
-                min: 0,
+                min: 10,
                 max: 100,
                 type: 'value',
                 axisLine:{
@@ -167,23 +128,16 @@ export default class MIndex extends Component {
                 symbol: 'circle',
                 data: [10, 40, 32, 20, 80, 90, 97]
             }, {
-                name: '跑腿',
+                name: '堂食',
                 smooth: true,
                 type: 'line',
                 symbolSize: 8,
                 symbol: 'circle',
                 data: [70, 50, 50, 87, 90, 80, 70]
-            },{
-                name: '会员',
-                smooth: true,
-                type: 'line',
-                symbolSize: 8,
-                symbol: 'circle',
-                data: [30, 40, 10, 20, 33, 66, 54]
             }]
         };
         return option;
-    }
+    };
     Panel(){
         let panel = text.map(function(item,index){
             return(
@@ -194,7 +148,7 @@ export default class MIndex extends Component {
             )
         });
         return panel;
-    }
+    };
     render() {
         return (
             <div>
@@ -203,15 +157,15 @@ export default class MIndex extends Component {
                     <Row gutter={16} style={{marginBottom:'20px'}}>
                         {this.CountUp()}
                     </Row>
-                    <Row gutter={16} style={{marginBottom:'20px'}}>
-                        <Col md={16}>
+                    <Row gutter={24} style={{marginBottom:'20px'}}>
+                        <Col md={24}>
                             <Card bodyStyle={{padding: 0,height:'277px',overflow:'hidden'}}>
                                 <ReactEcharts
                                     option={this.getOption()}
                                 />
                             </Card>
                         </Col>
-                        <Col md={8}>
+                        {/*<Col md={8}>
                             <Card bodyStyle={{padding: 0}}>
                                 <div className='avatar'>
                                     <Avatar
@@ -223,7 +177,7 @@ export default class MIndex extends Component {
                                     <p>471594060@qq.com</p>
                                 </div>
                                 <div className='weather'>
-                                    {/*心知天气API*/}
+                                  
                                     <div className='weather-img'>
                                         <img src={require('../../style/img/0.png')} alt=""/>
                                     </div>
@@ -232,9 +186,9 @@ export default class MIndex extends Component {
                                     </div>
                                 </div>
                             </Card>
-                        </Col>
+                        </Col>*/}
                     </Row>
-                    <Row gutter={16} style={{marginBottom:'20px'}}>
+                    {/*<Row gutter={16} style={{marginBottom:'20px'}}>
                         <Col md={8}>
                             <Card>
                                 <div>
@@ -304,8 +258,8 @@ export default class MIndex extends Component {
                                 </div>
                             </Card>
                         </Col>
-                    </Row>
-                    <Row>
+                    </Row>*/}
+                    {/*<Row>
                         <Col md={24}>
                             <Card>
                                 <div style={{marginBottom:'20px'}}>
@@ -319,7 +273,7 @@ export default class MIndex extends Component {
                                 />
                             </Card>
                         </Col>
-                    </Row>
+                    </Row>*/}
                 </div>
             </div>
         )

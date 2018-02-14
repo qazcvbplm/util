@@ -44,7 +44,6 @@ class Productadd extends React.Component {
     	let that=this;
 		let fields=this.props.form.getFieldsValue();
         let url='';
-        this.setState({loading:true});
         if(this.state.shop.sunwouId){
 					url='product/update';
 					fields.sunwouId=this.state.shop.sunwouId;
@@ -56,6 +55,7 @@ class Productadd extends React.Component {
         	}
                    url='product/add';
         }
+        this.setState({loading:true});
         fields.attributes=JSON.stringify(this.state.attribute);
         fields.categoryId=this.state.categoryId;
         fields.image=this.state.shop.image;
@@ -87,6 +87,10 @@ class Productadd extends React.Component {
        this.setState({attPrice:e});
     };
     attadd(){
+    	if(!this.state.attPrice){
+    		message.error("请填写规格");
+    		return;
+    	}
        this.state.attribute.push({name:this.state.attName,price:this.state.attPrice});
        this.setState({attribute:this.state.attribute});
     };

@@ -26,11 +26,13 @@ export default class Categorylist extends React.Component {
 	};
     getData(){
          let that=this;
+         Static.Loading();
 		Static.request('category/find',{query:JSON.stringify(that.state.query)},function(res){
                that.setState({
                	   data:res.params.categorys,
                	   total:res.params.total
                })
+               Static.hideLoading();
 		});
     };
     search(e){

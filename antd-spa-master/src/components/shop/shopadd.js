@@ -79,6 +79,7 @@ class Shopadd extends React.Component {
     	Static.Loading();
 		let fields=this.props.form.getFieldsValue();
         fields.schoolId=Static.school.sunwouId;
+        fields.shopImage=this.state.shop.shopImage;
         let url='';
         if(this.state.shop.sunwouId){
 					url='shop/update';
