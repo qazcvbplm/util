@@ -16,6 +16,7 @@ import Category from '../shop/category';
 import Productlist from '../product/productlist';
 import Schoolconfig from '../schoolconfig/schoolconfig';
 import SenderList from '../apply/sender';
+import Carousel from '../carousel/carousel';
 import ShopApply from '../apply/shopapply';
 const {Content, Footer} = Layout;
 
@@ -78,6 +79,7 @@ export default class App extends Component {
                               <Route exact path={'/app/schoolconfig'} component={Schoolconfig} />
                               <Route exact path={'/app/sender'} component={SenderList} />
                                <Route exact path={'/app/shopapply'} component={ShopApply} />
+                               <Route exact path={'/app/carousel'} component={Carousel} />
                             <Route component={noMatch} />
                         </Switch>
                          </Spin>
