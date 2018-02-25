@@ -18,6 +18,10 @@ import Schoolconfig from '../schoolconfig/schoolconfig';
 import SenderList from '../apply/sender';
 import Carousel from '../carousel/carousel';
 import ShopApply from '../apply/shopapply';
+import Order from '../order/order';
+import Statistics from '../tj/statistics';
+import ShopStatistics from '../tj/shopstatistics';
+import Withdrawals from '../withdrawals/withdrawals';
 const {Content, Footer} = Layout;
 
 
@@ -80,6 +84,10 @@ export default class App extends Component {
                               <Route exact path={'/app/sender'} component={SenderList} />
                                <Route exact path={'/app/shopapply'} component={ShopApply} />
                                <Route exact path={'/app/carousel'} component={Carousel} />
+                                <Route exact path={'/app/order'} component={Order} />
+                                 <Route exact path={'/app/statistics'} component={Statistics} />
+                                 <Route exact path={'/app/shopstatistics'} component={ShopStatistics} />
+                                 <Route exact path={'/app/withdrawals'} component={Withdrawals} />
                             <Route component={noMatch} />
                         </Switch>
                          </Spin>

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table,InputNumber,Button,Dropdown,Icon,Modal,Menu,Tag,Checkbox,Divider,message} from 'antd';
+import {Table,InputNumber,Button,Dropdown,Icon,Modal,Menu,Tag,Checkbox,Divider,message,Input} from 'antd';
 import BreadcrumbCustom from '../common/BreadcrumbCustom';
 import Static from '../static/Static';
 const CheckboxGroup = Checkbox.Group;
@@ -15,6 +15,12 @@ export default class SenderList extends React.Component {
               		{value:'isDelete',opertionType:'equal',opertionValue:false}
               		],
               		pages:{currentPage:1,size:10}},
+                  queryT:{wheres:[
+                  {value:'schoolId',opertionType:'equal',opertionValue:Static.school.sunwouId},
+                  {value:'isDelete',opertionType:'equal',opertionValue:false}
+                  ],
+                  fields:["shopName","name"]
+                  },
               	total:0,
               	visible:false,
               	modalkey:0,
@@ -22,12 +28,20 @@ export default class SenderList extends React.Component {
           }
           this.getData();
           that.initFloor();
+          that.initShop();
 	};
+  initShop(){
+      Static.request('shop/find',{query:JSON.stringify(that.state.queryT)},function(res){
+         if(res.params.shops){
+            that.setState({shop:res.params.shops});
+         }    
+      });
+  };
   initFloor(){
-      Static.request('floor/find',{query:JSON.stringify(that.state.query)},function(res){
-                   that.setState({
-                       floor:res.params.floors,
-                   })
+      Static.request('floor/find',{query:JSON.stringify(that.state.queryT)},function(res){
+              if(res.params.floors){
+                that.setState({floor:res.params.floors})
+              }      
         });
   };
     getData(){
@@ -47,7 +61,7 @@ export default class SenderList extends React.Component {
     };
     onSearch(name){
     	let query=this.state.query;
-    	query.wheres=[{value:name,opertionType:'like',opertionValue:this.state.search}];
+    	query.wheres[2]={value:name,opertionType:'like',opertionValue:this.state.search};
  		this.setState({query:query});
  		this.getData();
     };
@@ -74,11 +88,25 @@ export default class SenderList extends React.Component {
     	   }
        
     	 }
+       let shopName=[];
+       for(let i=0;i<this.state.shopsId.length;i++)
+       {
+         for(let j=0;j<this.state.shop.length;j++){
+              if(this.state.shop[j].sunwouId===this.state.shopsId[i]){
+                shopName.push(this.state.shop[j].shopName);
+                break;
+              }
+                    
+         }
+       
+       }
           Static.Loading();
           Static.request('sender/update',{
           	sunwouId:that.state.temp.sunwouId,
           	floorsId:that.state.floorsId.toString(),
           	floors:floorName.toString(),
+            shopsId:that.state.shopsId.toString(),
+            shops:shopName.toString(),
           	rate:that.state.rate/100
           },function(res){
                    if(res.code){
@@ -94,6 +122,11 @@ export default class SenderList extends React.Component {
        	   floorsId:e
        })
     };
+    shopClick(e){
+       this.setState({
+           shopsId:e
+       })
+    };
     number(e){
 		this.setState({
        	   rate:e
@@ -105,10 +138,16 @@ export default class SenderList extends React.Component {
     		   for(let i=0;i<this.state.floor.length;i++){
                       data.push({label:this.state.floor[i].name,value:this.state.floor[i].sunwouId});
     		   }
+           let data2=[];
+           for(let i=0;i<this.state.shop.length;i++){
+                      data2.push({label:this.state.shop[i].shopName,value:this.state.shop[i].sunwouId});
+           }
     		   let rate=this.state.temp.rate*100;
     		   let show=<div>
     		   <CheckboxGroup defaultValue={this.state.temp.floorsId}   options={data} onChange={this.floorClick.bind(this)} />
     		   <Divider />
+           <CheckboxGroup defaultValue={this.state.temp.shopsId}   options={data2} onChange={this.shopClick.bind(this)} />
+           <Divider />
     		   <span>对订单抽成</span>：<InputNumber defaultValue={rate} formatter={value => `${value}%`} onChange={this.number.bind(this)} min={0} max={100} />
     		   </div>;
                that.setState({visible:true,show:show,floorsId:this.state.temp.floorsId,rate:(this.state.temp.rate*100)});
@@ -146,7 +185,16 @@ export default class SenderList extends React.Component {
 		const columns = [{
 			  title: '姓名',
 			  key: 'realName',
-			  dataIndex:'realName'
+			  dataIndex:'realName',
+        filterDropdown: (
+            <div className="custom-filter-dropdown">
+              <Input
+                placeholder="Search"
+                onChange={this.search.bind(this)}
+              />
+              <Button type="primary" onClick={this.onSearch.bind(this,"realName")}>Search</Button>
+            </div>
+          ),
 			},{
 			  title: '性别',
 			  key: 'gender',
@@ -154,7 +202,16 @@ export default class SenderList extends React.Component {
 			},{
 			  title: '联系方式',
 			  key: 'phone',
-			  dataIndex:'phone'
+			  dataIndex:'phone',
+        filterDropdown: (
+            <div className="custom-filter-dropdown">
+              <Input
+                placeholder="Search"
+                onChange={this.search.bind(this)}
+              />
+              <Button type="primary" onClick={this.onSearch.bind(this,"phone")}>Search</Button>
+            </div>
+          ),
 			},{
 			  title: '班级',
 			  key: 'classes',
@@ -188,6 +245,10 @@ export default class SenderList extends React.Component {
 			  key: 'floors', 
 			  dataIndex:'floors' 
 			},{
+        title: '负责商店',
+        key: 'shops', 
+        dataIndex:'shops' 
+      },{
 			  title: '抽成',
 			  key: 'rate',
 			  render(text,record){

@@ -26,11 +26,13 @@ export default class Shoplist extends React.Component {
 	};
     getData(){
          let that=this;
+         Static.Loading();
 		Static.request('shop/find',{query:JSON.stringify(that.state.query)},function(res){
                that.setState({
                	   data:res.params.shops,
                	   total:res.params.total
                })
+               Static.hideLoading();
 		});
     };
     search(e){

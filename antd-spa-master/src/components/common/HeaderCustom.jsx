@@ -3,7 +3,6 @@ import { Layout, Icon, Menu, Button} from 'antd';
 /*import { Link } from 'react-router-dom';*/
 import Static from '../static/Static';
 const { Header } = Layout;
-const SubMenu = Menu.SubMenu;
 let that;
 export default class HeaderCustom extends Component{
     constructor(props){
@@ -49,6 +48,9 @@ export default class HeaderCustom extends Component{
     shopapply(){
         Static.history.push({pathname:'/app/shopapply'})
     };
+    tixian(){
+         Static.history.push({pathname:'/app/withdrawals'})
+    };
     render(){
         return(
             <Header style={{ background: '#fff', padding: 0 }} className="header">
@@ -79,13 +81,15 @@ export default class HeaderCustom extends Component{
                            </span>
                         </a>
                     </Menu.Item>
-                    <SubMenu 
-                        title={<span>
+      
+                    <Menu.Item key="tixain">
+                        <a onClick={this.tixian.bind(this)}>                            
                             <Icon type="user" style={{fontSize:16, color: '#1DA57A' }}/>
                             {this.props.username}
-                        </span>}
-                        >
-                    </SubMenu>
+                        </a>
+                    </Menu.Item>
+                 
+              
                 </Menu>
             </Header>
         )

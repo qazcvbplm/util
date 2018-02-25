@@ -48,7 +48,9 @@ class Shopadd extends React.Component {
                 topTitle:'',
                 address:'',
                 sendModel:true,
-                getModel:false
+                getModel:false,
+                backCode:1003,
+                realName:''
 		      }
 		}
         this.state={
@@ -156,6 +158,18 @@ class Shopadd extends React.Component {
 				          {getFieldDecorator('shopPhone',{initialValue:this.state.shop.shopPhone})(<Input placeholder="店铺手机号码" />)}
 				        </FormItem>
 			     </Row>
+			      {/*<Row align="middle">
+	                   <FormItem label="银行"
+	                   	{...formItemLayout}
+				        >
+				          {getFieldDecorator('bankCode',{initialValue:this.state.shop.bankCode})(<Select >
+																							      <Option value="1002">工商银行</Option>
+																							      <Option value="1005">农业银行</Option>
+																							      <Option value="1026" >中国银行</Option>
+																							      <Option value="1003">建设银行</Option>
+																							    </Select>)}
+				        </FormItem>
+			     </Row>
 			     <Row align="middle">
 	                   <FormItem label="店铺银行卡号"
 	                   	{...formItemLayout}
@@ -163,6 +177,13 @@ class Shopadd extends React.Component {
 				          {getFieldDecorator('bankNumber',{initialValue:this.state.shop.bankNumber})(<Input placeholder="店铺银行卡号" />)}
 				        </FormItem>
 			     </Row>
+			     <Row align="middle">
+	                   <FormItem label="银行卡姓名"
+	                   	{...formItemLayout}
+				        >
+				          {getFieldDecorator('realName',{initialValue:this.state.shop.realName})(<Input placeholder="银行卡姓名" />)}
+				        </FormItem>
+			     </Row>*/}
 			     <Row align="middle">
 	                   <FormItem label="商铺登录账号"
 	                   	{...formItemLayout}

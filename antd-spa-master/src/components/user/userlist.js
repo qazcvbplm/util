@@ -18,11 +18,13 @@ export default class Userlist extends React.Component {
 	};
     getData(){
          let that=this;
+         Static.Loading();
 		Static.request('user/find',{query:JSON.stringify(that.state.query)},function(res){
                that.setState({
                	   data:res.params.users,
                	   total:res.params.total
                })
+               Static.hideLoading();
 		});
     };
     search(e){
@@ -45,6 +47,10 @@ export default class Userlist extends React.Component {
 			   <Avatar alt="头像" size="large" src={record.avatarUrl} />
 			  ),
 			  key: 'avatarUrl',
+			}, {
+			  title: 'openid',
+			  dataIndex: 'openid',
+			  key: 'openid',
 			}, {
 			  title: '昵称',
 			  dataIndex: 'nickName',

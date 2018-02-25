@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Layout, Menu, Icon } from 'antd';
 import { Link } from 'react-router-dom';
-
+import Static from '../static/Static';
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 
@@ -14,6 +14,7 @@ export default class SiderCustom extends Component{
             firstHide: true, //第一次先隐藏暴露的子菜单
             selectedKey: '', //选择的路径
             openKey: '', //打开的路径（选择的上一层）
+            key:0,
         }
     }
     componentDidMount() {
@@ -47,6 +48,17 @@ export default class SiderCustom extends Component{
             firstHide: false,
         })
     };
+    order(type){
+       localStorage.setItem("orderType",type);
+       if(!Static.order){
+          Static.history.push({pathname:'/app/order'});
+       }else{
+            let query=Static.order.state.query;
+            query.wheres[2].opertionValue=type;
+            Static.order.setState({query:query});
+            Static.order.getData();
+       }
+    };
     render(){
         const { collapsed, firstHide, openKey, selectedKey } = this.state;
        
@@ -73,14 +85,14 @@ export default class SiderCustom extends Component{
                        <Link to={"/app/carousel"}><span>轮播图列表</span></Link>
                         </Menu.Item>
                     </SubMenu>
-                    <SubMenu key="/app/floor" title={<span><Icon type="user" />楼栋管理</span>}>
+                    <SubMenu key="/app/floor" title={<span><Icon type="user" />楼栋</span>}>
                        <Menu.Item key={"/app/floorlist"}>
                        <Link to={"/app/floorlist"}><span>查看楼栋</span></Link>
                         </Menu.Item>
                     </SubMenu>
-                    <SubMenu key="/app/categoryadd" title={<span><Icon type="edit" />店铺管理</span>}>
+                    <SubMenu key="/app/categoryadd" title={<span><Icon type="edit" />店铺</span>}>
                        <Menu.Item key={"/app/categorylist"}>
-                        <Link to={{pathname:"/app/categorylist",query:{type:'店铺分类'}}}><span>查看店铺分类</span></Link>
+                        <Link to={{pathname:"/app/categorylist",query:{type:'店铺分类'}}}><span>店铺分类</span></Link>
                          </Menu.Item>
                           <Menu.Item key={"/app/shopadd"}>
                         <Link to={{pathname:"/app/shopadd"}}><span>添加店铺</span></Link>
@@ -89,13 +101,26 @@ export default class SiderCustom extends Component{
                         <Link to={{pathname:"/app/shoplist"}}><span>店铺列表</span></Link>
                          </Menu.Item>
                     </SubMenu>
-                    <SubMenu key="/app/user" title={<span><Icon type="user" />用户管理</span>}>
+                    <SubMenu key="/app/user" title={<span><Icon type="user" />用户</span>}>
                        <Menu.Item key={"/app/userlist"}>
                         <Link to={"/app/userlist"}><span>用户列表</span></Link>
                        </Menu.Item>
                     </SubMenu>
+                     <SubMenu key="/app/order" title={<span><Icon type="user" />订单</span>}>
+                       <Menu.Item key={"/app/orderlist"}>
+                            <span  onClick={this.order.bind(this,"外卖订单")}>外卖订单</span>
+                       </Menu.Item>
+                       <Menu.Item key={"/app/tjorder"}>
+                            <span  onClick={this.order.bind(this,"堂食订单")}>堂食订单</span>
+                       </Menu.Item>
+                    </SubMenu>
+                    <SubMenu key="/app/tj" title={<span><Icon type="user" />统计</span>}>
+                       <Menu.Item key={"/app/tjsub"}>
+                        <Link to={"/app/statistics"}><span>外卖统计</span></Link>
+                       </Menu.Item>
+                    </SubMenu>
                     <Menu.Item key={"/app/schoolconfig"}>
-                        <Link to={"/app/schoolconfig"}><Icon type="home" /><span>学校配置</span></Link>
+                        <Link to={"/app/schoolconfig"}><Icon type="home" /><span>配置</span></Link>
                     </Menu.Item>
                 </Menu>
             </Sider>

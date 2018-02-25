@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import BreadcrumbCustom from '../common/BreadcrumbCustom';
 import { Card, Row, Col, Collapse} from 'antd';
 import './index.less';
-import CountUp from 'react-countup';
+/*import CountUp from 'react-countup';*/
 import ReactEcharts from 'echarts-for-react';
 import Static from '../static/Static';
 const Panel = Collapse.Panel;
@@ -43,7 +43,7 @@ export default class MIndex extends Component {
                    count:[temp.userActiveCount,temp.orderNumber,temp.schoolToDayTransactionMoney,temp.schoolMoney]
                  })
                  Static.hideLoading();
-           });
+           });  
     };
     CountUp(){
         let imgSrc = ["mail","chat","cart","heart"];
@@ -57,7 +57,8 @@ export default class MIndex extends Component {
                             <img src={require('../../style/img/'+item+'.png')} alt=""/>
                             <dl>
                                 <dt>{imgName[index]}</dt>
-                                <dd><CountUp start={0} end={count[index]} duration={2.75}/></dd>
+                              {/*  <dd><CountUp start={0} end=duration={2.75}/></dd>*/}
+                              <dd>{count[index]} </dd>
                             </dl>
                         </div>
                     </Card>
