@@ -1,6 +1,6 @@
 import React from 'react';
 import BreadcrumbCustom from '../common/BreadcrumbCustom';
-import {Form,Input,Row,Button,message,Switch,Select,Upload, Icon,InputNumber } from 'antd';
+import {Form,Input,Row,Button,message,Switch,Select,Upload, Icon,InputNumber,Rate} from 'antd';
 import Static from '../static/Static';
 import './shop.css';
 
@@ -29,6 +29,7 @@ class Shopadd extends React.Component {
 		    });
 		}else{
             shop={
+            	sunwouId:null,
         		shopName:'',
         		open:false,
         		shopPhone:'',
@@ -206,13 +207,13 @@ class Shopadd extends React.Component {
 				          	<Switch checkedChildren="开" unCheckedChildren="关" defaultChecked={this.state.shop.open} />)}
 				        </FormItem>
 			     </Row>
-			     {/*<Row align="middle">
+			     {<Row align="middle">
 	                   <FormItem label="店铺评分"
 	                   	{...formItemLayout}
 				        >
 				          {getFieldDecorator('score',{initialValue:0.5})( <Rate allowHalf  />)}
 				        </FormItem>
-			     </Row>*/}
+			     </Row>}
 			     <Row align="middle">
 	                   <FormItem label="起送费"
 	                   	{...formItemLayout}

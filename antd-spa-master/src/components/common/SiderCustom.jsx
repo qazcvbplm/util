@@ -15,8 +15,9 @@ export default class SiderCustom extends Component{
             selectedKey: '', //选择的路径
             openKey: '', //打开的路径（选择的上一层）
             key:0,
-        }
+        };
     }
+
     componentDidMount() {
         this.setMenuOpen(this.props);
     }
@@ -41,23 +42,36 @@ export default class SiderCustom extends Component{
         this.setState({
             selectedKey: e.key
         });
+        if(e.key==='外卖订单'||e.key==='堂食订单'){
+                localStorage.setItem("orderType",e.key);
+             if(!Static.order){
+                Static.history.push({pathname:'/app/order'});
+             }else{
+                  let query=Static.order.state.query;
+                  query.wheres[2].opertionValue=e.key;
+                  Static.order.setState({query:query});
+                  Static.order.getData();
+             }
+        }
+        if(e.key==='轮播图'||e.key==='功能页面'){
+           localStorage.setItem("carouselType",e.key);
+            if(!Static.carousel){
+                Static.history.push({pathname:'/app/carousel'});
+             }else{
+                  let query=Static.carousel.state.query;
+                  query.wheres[1].opertionValue=e.key;
+                  Static.carousel.setState({query:query,type:e.key});
+                  Static.carousel.getData();
+             }
+        }
+
+        
     };
     openMenu = v => {
         this.setState({
             openKey: v[v.length - 1],
             firstHide: false,
         })
-    };
-    order(type){
-       localStorage.setItem("orderType",type);
-       if(!Static.order){
-          Static.history.push({pathname:'/app/order'});
-       }else{
-            let query=Static.order.state.query;
-            query.wheres[2].opertionValue=type;
-            Static.order.setState({query:query});
-            Static.order.getData();
-       }
     };
     render(){
         const { collapsed, firstHide, openKey, selectedKey } = this.state;
@@ -81,8 +95,13 @@ export default class SiderCustom extends Component{
                         <Link to={"/app"}><Icon type="home" /><span>首页</span></Link>
                     </Menu.Item>
                      <SubMenu key="/app/carousel" title={<span><Icon type="user" />轮播图</span>}>
-                       <Menu.Item key={"/app/carousel"}>
-                       <Link to={"/app/carousel"}><span>轮播图列表</span></Link>
+                       <Menu.Item key={"轮播图"}>
+                            <span>轮播图列表</span>
+                        </Menu.Item>
+                    </SubMenu>
+                    <SubMenu key="/app/carousel2" title={<span><Icon type="user" />功能页面</span>}>
+                       <Menu.Item key={"功能页面"}>
+                            <span>功能页面</span>
                         </Menu.Item>
                     </SubMenu>
                     <SubMenu key="/app/floor" title={<span><Icon type="user" />楼栋</span>}>
@@ -106,17 +125,20 @@ export default class SiderCustom extends Component{
                         <Link to={"/app/userlist"}><span>用户列表</span></Link>
                        </Menu.Item>
                     </SubMenu>
-                     <SubMenu key="/app/order" title={<span><Icon type="user" />订单</span>}>
-                       <Menu.Item key={"/app/orderlist"}>
-                            <span  onClick={this.order.bind(this,"外卖订单")}>外卖订单</span>
+                     <SubMenu  key="/app/order" title={<span><Icon type="user" />订单</span>}>
+                       <Menu.Item key={"外卖订单"}>
+                            <span  >外卖订单</span>
                        </Menu.Item>
-                       <Menu.Item key={"/app/tjorder"}>
-                            <span  onClick={this.order.bind(this,"堂食订单")}>堂食订单</span>
+                       <Menu.Item key={"堂食订单"}>
+                            <span  >堂食订单</span>
                        </Menu.Item>
                     </SubMenu>
                     <SubMenu key="/app/tj" title={<span><Icon type="user" />统计</span>}>
                        <Menu.Item key={"/app/tjsub"}>
-                        <Link to={"/app/statistics"}><span>外卖统计</span></Link>
+                           <Link to={"/app/statistics"}><span>外卖统计</span></Link>
+                       </Menu.Item>
+                       <Menu.Item key={"/app/txlog"}>
+                           <Link to={"/app/withdrawalslog"}><span>提现记录</span></Link>
                        </Menu.Item>
                     </SubMenu>
                     <Menu.Item key={"/app/schoolconfig"}>

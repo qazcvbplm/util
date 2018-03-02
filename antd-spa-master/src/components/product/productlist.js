@@ -121,6 +121,16 @@ export default class Productlist extends React.Component {
                }
         },
 			},{
+        title: '上架状态',
+        key: 'boxFlag',
+        render(text, record){
+               if(record.isShow){
+                return <Tag color="green">上架中</Tag>;
+               }else{
+                return <Tag color="red">已下架</Tag>;
+               }
+        },
+      },{
 			  title: '操作',
 			  key: '1',
 			 render:function(text,record,index){

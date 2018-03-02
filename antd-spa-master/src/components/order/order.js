@@ -117,7 +117,7 @@ export default class Order extends React.Component {
 			  dataIndex:'reserveTime'
 			},{
 			  title: '商品详情',
-			  key: 'total',
+			  key: 'xq',
 			  render(text,record){
                   let rs='';
                   for(let i=0;i<record.orderProduct.length;i++){
@@ -171,6 +171,7 @@ export default class Order extends React.Component {
 		        { text: '商家已接手', value: '商家已接手' },
 		        { text: '配送员已接手', value: '配送员已接手' },
 		        { text: '已完成', value: '已完成' },
+		        { text: '已取消', value: '已取消' },
 		      ],
       onFilter: (value, record) => record.status.includes(value),},
 			{

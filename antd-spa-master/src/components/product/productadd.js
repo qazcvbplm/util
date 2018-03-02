@@ -28,6 +28,7 @@ class Productadd extends React.Component {
         		discount:100,
         		sales:0,
         		attribute:[],
+        		isShow:true
 		      }
 		}
         this.state={
@@ -136,6 +137,14 @@ class Productadd extends React.Component {
 				          {getFieldDecorator('name',{initialValue:this.state.shop.name})(<Input placeholder="店铺名字" />)}
 				        </FormItem>
 			     </Row> 
+			      <Row align="middle">
+	                   <FormItem label="是否上架"
+	                   	{...formItemLayout}
+				        >
+				          {getFieldDecorator('isShow',{initialValue:this.state.shop.isShow})(
+				          	<Switch checkedChildren="开" unCheckedChildren="关" defaultChecked={this.state.shop.isShow} />)}
+				        </FormItem>
+			     </Row>
 			     <Row align="middle">
 	                   <FormItem label="是否计算餐盒费"
 	                   	{...formItemLayout}

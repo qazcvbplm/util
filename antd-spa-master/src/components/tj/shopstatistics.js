@@ -26,6 +26,7 @@ export default class ShopStatistics extends React.Component {
               	codeBtn:'发送',
                 trigger:'click'
           }
+          that.getData();
 	};
     getData(){
          Static.Loading();

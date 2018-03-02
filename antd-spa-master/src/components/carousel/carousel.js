@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table,Button,Dropdown,Icon,Modal,Menu,message,Divider,Upload} from 'antd';
+import {Table,Button,Dropdown,Icon,Modal,Menu,message,Divider,Upload,Input,Row,Col} from 'antd';
 import BreadcrumbCustom from '../common/BreadcrumbCustom';
 import Static from '../static/Static';
 import './carousel.css';
@@ -8,10 +8,12 @@ export default class Carousel extends React.Component {
 	constructor(props) {
 		super(props);
 		that=this;
+		let type=localStorage.getItem("carouselType");
 		 this.state={
               	data:[],
               	query:{wheres:[
               		{value:'schoolId',opertionType:'equal',opertionValue:Static.school.sunwouId},
+              		{value:'type',opertionType:'equal',opertionValue:type},
               		{value:'isDelete',opertionType:'equal',opertionValue:false}
               		],
               		pages:{currentPage:1,size:10}},
@@ -19,10 +21,16 @@ export default class Carousel extends React.Component {
               	visible:false,
               	modalkey:0,
               	uploadUrl:Static.FileIP+'/file/up',
-              	trigger:'click'
+              	trigger:'click',
+              	type:type,
+              	show:null
           }
+          Static.carousel=this;
           this.getData();
 	};
+	 componentWillUnmount(){
+        Static.carousel=null;
+    };
     getData(){
         Static.Loading();
 			Static.request('carousel/find',{query:JSON.stringify(that.state.query)},function(res){
@@ -49,7 +57,21 @@ export default class Carousel extends React.Component {
          })
     };
     handleOk(){
-    	
+    	   if(!that.state.path){
+               message.error('请输入路径');
+               return;
+         }else
+         {
+           Static.request('/carousel/update',{
+            sunwouId:that.state.temp.sunwouId,action:that.state.action,actionPath:that.state.path,
+            name:that.state.name
+          },function(res){
+          if(res.code){
+             message.success("操作成功");
+                  that.getData();
+              }
+            })
+         }
     };
     menuClick(e){
     	if(e.key==='1'){
@@ -64,6 +86,12 @@ export default class Carousel extends React.Component {
     	if(e.key==='2'){
     		return;
     	}
+    	if(e.key==='3'){
+        let show;
+        show=<Input placeholder="输入跳转路径" onChange={e => this.setState({path:e.target.value})} />
+        that.setState({show:show,visible:true,action:'跳转'});
+    		return;
+    	}
       
     };
     dropdownclick(record){
@@ -73,14 +101,24 @@ export default class Carousel extends React.Component {
     	that.setState({visible:true,action:action})
     };
       fileup(e){
+
       	let image='';
         if(e.file.status==='done'){
+                  if(this.state.type==='功能页面'){
+                    if(!this.state.name){
+                      message.error('请输入标题');
+                      return;
+                    }
+                }
         	image=Static.ImageIP+e.file.response.params.path;
-            Static.request('/carousel/add',{mediaUrl:image,schoolId:Static.school.sunwouId},function(res){
+            Static.request('/carousel/add',{mediaUrl:image,schoolId:Static.school.sunwouId,type:that.state.type},function(res){
                   message.success("添加成功");
                   that.getData();
             })
         }
+    };
+    title(e){
+           this.setState({name:e.target.value});
     };
 	render() {
 		const that=this;
@@ -88,6 +126,7 @@ export default class Carousel extends React.Component {
 		  <Menu  onClick={that.menuClick.bind(that)}>
 		    <Menu.Item key="1">删除</Menu.Item>
 		    <Menu.Item key="2">关联商店</Menu.Item>
+		    <Menu.Item key="3">跳转路径</Menu.Item>
 		  </Menu>
 		);
 		const columns = [{
@@ -107,6 +146,10 @@ export default class Carousel extends React.Component {
 			  	}
 			  },
 			},{
+        title: '事件内容',
+        key: 'actionPath',
+        dataIndex: 'actionPath'
+      },{
 			  title: '操作',
 			  key: 'opertion',
 			  render(text, record) {
@@ -120,15 +163,21 @@ export default class Carousel extends React.Component {
 		return (
 			<div >
 			     <Modal
-			     key={this.state.modalkey}
+           closable={false}
+			        key={this.state.modalkey}
 		          visible={this.state.visible}
 		          onOk={this.handleOk.bind(this)}
 		          onCancel={this.handleCancel.bind(this)}
 		        >
-		        
+		        {this.state.show}
 		        </Modal>
 			    <BreadcrumbCustom paths={['首页','轮播图管理','']}/>
 			     <div className="form">
+           <Row>
+			       <Col span={8}>
+             {this.state.type==='功能页面'?<Input onChange={this.title.bind(this)} placeholder="标题" />:null}
+             </Col>
+             <Col span={8} offset={1}>
 		           <Upload
 					          action={this.state.uploadUrl}
 					          data={{type:'image'}}	
@@ -136,6 +185,8 @@ export default class Carousel extends React.Component {
 					        >
 					  <Button><Icon type="upload" />添加轮播图</Button>
 					</Upload>
+          </Col>
+          </Row>
 		          <Divider />
 				<Table  pagination={{
                     pageSize:this.state.query.pages.size,

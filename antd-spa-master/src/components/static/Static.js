@@ -10,6 +10,7 @@ const Static = {
    history:createHistory(),
    school:null,
    app:null,
+   console:[],
    request:function(url,data,callback){
          $.ajax({
          	url:this.IP+url,
@@ -26,6 +27,13 @@ const Static = {
    },
    hideLoading:function(){
       this.app.setState({loading:false});
+   },
+   socket(){
+      let that=this;
+       let socket = new WebSocket('ws://localhost/frame/ws/socket');
+         socket.onmessage = function(e){
+            that.console.push(e.data);
+         };
    }
 };
 export default Static;

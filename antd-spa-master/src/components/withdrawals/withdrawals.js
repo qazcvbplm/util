@@ -17,23 +17,19 @@ class Withdrawals extends React.Component {
 	};
     submit(){
          let fields=this.props.form.getFieldsValue();
+         fields.schoolId=Static.school.sunwouId;
+         fields.secert=that.state.secert;
          if(fields.amount<1){
          	message.error("金额必须大于1");
          	return;
          }
-         if(fields.type==='零钱'){
-             if(!fields.openid){
-             	message.error("请填写用户openid");
-             	return;
-             }
-             Static.Loading();
-             Static.request('/school/withdrawals',{
-             	schoolId:Static.school.sunwouId,
-             	amount:fields.amount,
-             	openid:fields.openid,
-             	type:fields.type,
-             	secert:that.state.secert
-             },function(res){
+	     if(fields.type==='零钱'){
+	             if(!fields.openid){
+	             	message.error("请填写用户openid");
+	             	return;
+	              }
+	                Static.Loading();
+             Static.request('/school/withdrawals',fields,function(res){
            				if(res.code){
            					message.success(res.msg);
            				}else{
@@ -44,10 +40,21 @@ class Withdrawals extends React.Component {
            })  
          }
          if(fields.type==='银行卡'){
-             if(!fields.banckNumber||!fields.name){
+             if(!fields.bankNumber||!fields.name){
              	message.error("请填写卡信息");
+             	return;
              }
+              Static.request('/school/withdrawals',fields,function(res){
+           				if(res.code){
+           					message.success(res.msg);
+           				}else{
+           					message.error(res.msg);
+           				}
+           				Static.hideLoading();
+
+           		})  
          }
+
     };
     getcode(){
 
