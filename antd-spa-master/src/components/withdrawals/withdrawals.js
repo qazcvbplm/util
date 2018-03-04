@@ -44,6 +44,7 @@ class Withdrawals extends React.Component {
              	message.error("请填写卡信息");
              	return;
              }
+             Static.Loading();
               Static.request('/school/withdrawals',fields,function(res){
            				if(res.code){
            					message.success(res.msg);

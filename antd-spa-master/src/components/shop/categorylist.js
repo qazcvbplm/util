@@ -10,6 +10,7 @@ export default class Categorylist extends React.Component {
               	data:[],
               	query:{
               		wheres:[
+                  {value:'schoolId',opertionType:'equal',opertionValue:Static.school.sunwouId},
               		{value:'type',opertionType:'equal',opertionValue:this.props.location.query.type},
               		{value:'isDelete',opertionType:'equal',opertionValue:false}
               		],

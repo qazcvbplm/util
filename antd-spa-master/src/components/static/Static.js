@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import createHistory from 'history/createBrowserHistory';
 
-const IP='http://localhost/';
+const IP='http://www.wojush.com/';
 const FileIP='http://www.wojush.com/';
 const Static = {
    ImageIP:FileIP,
@@ -12,6 +12,10 @@ const Static = {
    app:null,
    console:[],
    request:function(url,data,callback){
+        let that=this;
+          if(that.app){
+                   this.Loading();
+                }
          $.ajax({
          	url:this.IP+url,
          	method:'POST',
@@ -19,6 +23,9 @@ const Static = {
             data:data,
          	success:function(res){
                   callback(res);
+                 if(that.app){
+                   that.hideLoading();
+                }
          	}
          })
    },

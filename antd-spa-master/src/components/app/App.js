@@ -23,6 +23,8 @@ import Statistics from '../tj/statistics';
 import ShopStatistics from '../tj/shopstatistics';
 import Withdrawals from '../withdrawals/withdrawals';
 import WithdrawalsLog from '../withdrawals/withdrawalsLog';
+import ArticleList from '../article/articlelist';
+import Rich from '../article/rich';
 const {Content, Footer} = Layout;
 
 
@@ -34,10 +36,11 @@ export default class App extends Component {
         super(props);
         this.state={
             visible:false,
-            console:[]
+            console:[],
+            debug:false
         }
         Static.app=this;
-        this.socket();
+        /*this.socket();*/
       }
 
     
@@ -63,7 +66,8 @@ export default class App extends Component {
                  console.log(e)
          }
          socket.onopen=function(e){
-                 console.log("连接成功")
+                 console.log("连接成功");
+                 that.setState({debug:true})
          }
      };
     componentDidMount() {
@@ -108,7 +112,7 @@ export default class App extends Component {
                             <Route exact path={'/app/floorlist'} component={Floorlist} />
                             <Route exact path={'/app/shopadd'} component={Shopadd} />
                             <Route exact path={'/app/shoplist'} component={Shoplist} />
-                             <Route exact path={'/app/productlist'} component={Productlist} />
+                            <Route exact path={'/app/productlist'} component={Productlist} />
                               <Route exact path={'/app/schoolconfig'} component={Schoolconfig} />
                               <Route exact path={'/app/sender'} component={SenderList} />
                                <Route exact path={'/app/shopapply'} component={ShopApply} />
@@ -118,6 +122,8 @@ export default class App extends Component {
                                  <Route exact path={'/app/shopstatistics'} component={ShopStatistics} />
                                  <Route exact path={'/app/withdrawals'} component={Withdrawals} />
                                  <Route exact path={'/app/withdrawalslog'} component={WithdrawalsLog} />
+                                 <Route exact path={'/app/article'} component={ArticleList} />
+                                  <Route exact path={'/app/rich'} component={Rich} />
                             <Route component={noMatch} />
                         </Switch>
                          </Spin>
@@ -126,9 +132,9 @@ export default class App extends Component {
                         react-antd ©2017 Created by sunwou
                     </Footer>
                 </Layout>
-                <Affix style={{ position: 'absolute', top: '20', left: '20'}}>
+                {this.state.debug===true?<Affix style={{ position: 'absolute', top: '20', left: '20'}}>
                   <Button type="primary" onClick={() => this.setState({visible:true})}>Console</Button>
-                </Affix>
+                </Affix>:null}
             </Layout>
         );
     }

@@ -103,15 +103,18 @@ export default class Carousel extends React.Component {
       fileup(e){
 
       	let image='';
+        let data={mediaUrl:image,schoolId:Static.school.sunwouId,type:that.state.type};
         if(e.file.status==='done'){
                   if(this.state.type==='功能页面'){
                     if(!this.state.name){
                       message.error('请输入标题');
                       return;
+                    }else{
+                      data.name=this.state.name;
                     }
                 }
         	image=Static.ImageIP+e.file.response.params.path;
-            Static.request('/carousel/add',{mediaUrl:image,schoolId:Static.school.sunwouId,type:that.state.type},function(res){
+            Static.request('/carousel/add',data,function(res){
                   message.success("添加成功");
                   that.getData();
             })
@@ -183,7 +186,7 @@ export default class Carousel extends React.Component {
 					          data={{type:'image'}}	
 					          onChange={this.fileup.bind(this)}
 					        >
-					  <Button><Icon type="upload" />添加轮播图</Button>
+					  <Button><Icon type="upload" />选择图片</Button>
 					</Upload>
           </Col>
           </Row>

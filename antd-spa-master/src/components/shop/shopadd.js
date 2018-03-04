@@ -1,6 +1,6 @@
 import React from 'react';
 import BreadcrumbCustom from '../common/BreadcrumbCustom';
-import {Form,Input,Row,Button,message,Switch,Select,Upload, Icon,InputNumber,Rate} from 'antd';
+import {Form,Input,Row,Button,message,Switch,Select,Upload, Icon,InputNumber,Rate,Spin} from 'antd';
 import Static from '../static/Static';
 import './shop.css';
 
@@ -51,7 +51,8 @@ class Shopadd extends React.Component {
                 sendModel:true,
                 getModel:false,
                 backCode:1003,
-                realName:''
+                realName:'',
+                score:0.5
 		      }
 		}
         this.state={
@@ -60,7 +61,8 @@ class Shopadd extends React.Component {
         	fileNumber:0,
         	shop:shop,
         	fileList:fileList,
-        	fromclass:fromclass
+        	fromclass:fromclass,
+        	loading:true
         }
 	};
 	componentDidMount(){
@@ -79,12 +81,13 @@ class Shopadd extends React.Component {
 		});
 	};
     submit(){
-    	Static.Loading();
+    	let that=this;
 		let fields=this.props.form.getFieldsValue();
         fields.schoolId=Static.school.sunwouId;
         fields.shopImage=this.state.shop.shopImage;
         let url='';
         if(this.state.shop.sunwouId){
+        			that.setState({loading:true})
 					url='shop/update';
 					fields.sunwouId=this.state.shop.sunwouId;
 					fields.shopImage=this.state.shop.shopImage;
@@ -97,7 +100,7 @@ class Shopadd extends React.Component {
                 }else{
                 	message.error(res.msg);
                 }
-                Static.hideLoading();
+                that.setState({loading:false})
         })
     };
     fileup(e){
@@ -119,6 +122,7 @@ class Shopadd extends React.Component {
 		      wrapperCol: { span: 8},
 		    };
 		return (
+			<Spin spinning={this.state.loading} size="large">
 			<div >
 			  {this.state.shop.sunwouId===null?<BreadcrumbCustom paths={['首页','店铺管理','添加店铺']}/>:null}
 			  <Form className={this.state.fromclass}>
@@ -137,7 +141,7 @@ class Shopadd extends React.Component {
 				          <Upload
 					          action={this.state.uploadUrl}
 					          listType="picture-card"	
-					          data={{type:'image'}}	
+					          data={{type:'image',compress:true,compressd:0.5}}	
 					          defaultFileList={this.state.fileList}	
 					          onChange={this.fileup.bind(this)}
 					        >
@@ -207,13 +211,13 @@ class Shopadd extends React.Component {
 				          	<Switch checkedChildren="开" unCheckedChildren="关" defaultChecked={this.state.shop.open} />)}
 				        </FormItem>
 			     </Row>
-			     {<Row align="middle">
+			     <Row align="middle">
 	                   <FormItem label="店铺评分"
 	                   	{...formItemLayout}
 				        >
-				          {getFieldDecorator('score',{initialValue:0.5})( <Rate allowHalf  />)}
+				          {getFieldDecorator('score',{initialValue:this.state.shop.score})( <Rate allowHalf  />)}
 				        </FormItem>
-			     </Row>}
+			     </Row>
 			     <Row align="middle">
 	                   <FormItem label="起送费"
 	                   	{...formItemLayout}
@@ -307,6 +311,7 @@ class Shopadd extends React.Component {
 			     </Row> 
               </Form>
 			</div>
+			</Spin>
 		);
 	}
 }

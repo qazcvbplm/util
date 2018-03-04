@@ -122,7 +122,7 @@ class Productadd extends React.Component {
 				          <Upload
 					          action={this.state.uploadUrl}
 					          listType="picture-card"	
-					          data={{type:'image'}}	
+					           data={{type:'image',compress:true,compressd:0.5}}	
 					          defaultFileList={this.state.fileList}	
 					          onChange={this.fileup.bind(this)}
 					        >
@@ -134,7 +134,7 @@ class Productadd extends React.Component {
 	                   <FormItem label="商品名字"
 	                   	{...formItemLayout}
 				        >
-				          {getFieldDecorator('name',{initialValue:this.state.shop.name})(<Input placeholder="店铺名字" />)}
+				          {getFieldDecorator('name',{initialValue:this.state.shop.name})(<Input placeholder="商品名字" />)}
 				        </FormItem>
 			     </Row> 
 			      <Row align="middle">

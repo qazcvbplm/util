@@ -104,6 +104,13 @@ export default class SiderCustom extends Component{
                             <span>功能页面</span>
                         </Menu.Item>
                     </SubMenu>
+                    <SubMenu key="/app/article" title={<span><Icon type="user" />首页文章</span>}>
+                       <Menu.Item key={"文章"}>
+                              <Link to={{pathname:"/app/article"}}>
+                              <span>文章列表</span>
+                              </Link>
+                        </Menu.Item>
+                    </SubMenu>
                     <SubMenu key="/app/floor" title={<span><Icon type="user" />楼栋</span>}>
                        <Menu.Item key={"/app/floorlist"}>
                        <Link to={"/app/floorlist"}><span>查看楼栋</span></Link>

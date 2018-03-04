@@ -63,6 +63,12 @@ export default class WithdrawalsLog extends React.Component {
                    return record.amount+"元";
 			  }
 			},{
+			  title: '手续费',
+			  key: 'sxf',
+			  render(text,record){
+                   return record.sxf+"元";
+			  }
+			},{
 			  title: '配送员姓名',
 			  dataIndex: 'name',
 			  key: 'name',

@@ -59,12 +59,27 @@ export default class ShopApply extends React.Component {
     	}
     	if(e.key==='3'){
     	}
-    	    Static.Loading();
+    	if(e.key==='4'){
+    		Static.request('shopapply/update',{
+                sunwouId:that.state.temp.sunwouId,
+                isDelete:true,
+    		},function(res){
+    			message.success(res.msg);
+                 that.getData();
+    		})
+    		return;
+    	}
+
     		Static.request('shopapply/pass',{
                 sunwouId:that.state.temp.sunwouId,
                 pass:pass
     		},function(res){
-    			message.success(res.msg);
+    			if(res.code){
+    				message.success(res.msg);
+    			}else{
+    				message.error(res.msg);
+    			}
+
                  that.getData();
     		})
 
@@ -80,6 +95,7 @@ export default class ShopApply extends React.Component {
 		  <Menu.Item key="1">证件查看</Menu.Item>
 		    <Menu.Item key="2">审核通过</Menu.Item>
 		    <Menu.Item key="3">审核失败</Menu.Item>
+		    <Menu.Item key="4">删除</Menu.Item>
 		  </Menu>
 		);
 		const columns = [{
