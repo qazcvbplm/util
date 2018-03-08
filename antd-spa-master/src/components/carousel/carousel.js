@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table,Button,Dropdown,Icon,Modal,Menu,message,Divider,Upload,Input,Row,Col} from 'antd';
+import {Table,Button,Dropdown,Icon,Modal,Menu,message,Divider,Upload,Input,Row,Col,Tag} from 'antd';
 import BreadcrumbCustom from '../common/BreadcrumbCustom';
 import Static from '../static/Static';
 import './carousel.css';
@@ -14,7 +14,7 @@ export default class Carousel extends React.Component {
               	query:{wheres:[
               		{value:'schoolId',opertionType:'equal',opertionValue:Static.school.sunwouId},
               		{value:'type',opertionType:'equal',opertionValue:type},
-              		{value:'isDelete',opertionType:'equal',opertionValue:false}
+                  {value:'isDelete',opertionType:'equal',opertionValue:false},
               		],
               		pages:{currentPage:1,size:10}},
               	total:0,
@@ -92,6 +92,17 @@ export default class Carousel extends React.Component {
         that.setState({show:show,visible:true,action:'跳转'});
     		return;
     	}
+      if(e.key==='4'){
+        if(!that.state.temp.isShow){
+          that.state.temp.isShow=false;
+        }
+        Static.request('/carousel/update',{
+            sunwouId:that.state.temp.sunwouId,
+            isShow:!that.state.temp.isShow
+          },function(res){
+             that.getData();
+         });
+      }
       
     };
     dropdownclick(record){
@@ -113,7 +124,7 @@ export default class Carousel extends React.Component {
                       data.name=this.state.name;
                     }
                 }
-        	image=Static.ImageIP+e.file.response.params.path;
+        	data.mediaUrl=Static.ImageIP+e.file.response.params.path;
             Static.request('/carousel/add',data,function(res){
                   message.success("添加成功");
                   that.getData();
@@ -123,6 +134,9 @@ export default class Carousel extends React.Component {
     title(e){
            this.setState({name:e.target.value});
     };
+    show(record){
+      
+    };
 	render() {
 		const that=this;
 		const menu = (
@@ -130,6 +144,7 @@ export default class Carousel extends React.Component {
 		    <Menu.Item key="1">删除</Menu.Item>
 		    <Menu.Item key="2">关联商店</Menu.Item>
 		    <Menu.Item key="3">跳转路径</Menu.Item>
+        <Menu.Item key="4">上下架</Menu.Item>
 		  </Menu>
 		);
 		const columns = [{
@@ -152,6 +167,19 @@ export default class Carousel extends React.Component {
         title: '事件内容',
         key: 'actionPath',
         dataIndex: 'actionPath'
+      },{
+        title: '显示状态',
+        key: 'isDelete',
+        render(text,record){
+                if(!record.isShow){
+                   return <Tag color="red" >不显示</Tag>
+                }
+                if(record.isShow===false){
+                   return <Tag color="red" >不显示</Tag>
+                }else{
+                   return <Tag  color="green" >显示</Tag>
+                }
+        }
       },{
 			  title: '操作',
 			  key: 'opertion',

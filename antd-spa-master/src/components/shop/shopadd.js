@@ -62,7 +62,7 @@ class Shopadd extends React.Component {
         	shop:shop,
         	fileList:fileList,
         	fromclass:fromclass,
-        	loading:true
+        	loading:false
         }
 	};
 	componentDidMount(){

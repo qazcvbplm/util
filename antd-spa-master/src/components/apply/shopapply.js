@@ -1,6 +1,7 @@
 import React from 'react';
 import {Table,Button,Dropdown,Icon,Modal,Menu,Tag,message} from 'antd';
 import BreadcrumbCustom from '../common/BreadcrumbCustom';
+import ListImage from '../common/ListImage';
 import Static from '../static/Static';
 let that;
 export default class ShopApply extends React.Component {
@@ -17,6 +18,7 @@ export default class ShopApply extends React.Component {
               	total:0,
               	visible:false,
               	modalkey:0,
+              	trigger:'click'
           }
           this.getData();
 	};
@@ -50,7 +52,8 @@ export default class ShopApply extends React.Component {
     };
     menuClick(e){
     	if(e.key==='1'){
-    		that.setState({visible:true})
+    		let show=<ListImage array={this.state.temp.image} />
+    		that.setState({visible:true,show:show})
     		return;
     	}
     	let pass=false;
@@ -152,12 +155,13 @@ export default class ShopApply extends React.Component {
 		return (
 			<div >
 			     <Modal
+			     width={1000}	
 			     key={this.state.modalkey}
 		          visible={this.state.visible}
 		          onOk={this.handleOk.bind(this)}
 		          onCancel={this.handleCancel.bind(this)}
 		        >
-		          
+		         {this.state.show}
 		        </Modal>
 			    <BreadcrumbCustom paths={['首页','用户管理','商铺入驻管理']}/>
 				<Table  pagination={{
