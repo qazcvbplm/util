@@ -25,6 +25,8 @@ import Withdrawals from '../withdrawals/withdrawals';
 import WithdrawalsLog from '../withdrawals/withdrawalsLog';
 import ArticleList from '../article/articlelist';
 import Rich from '../article/rich';
+import SenderDayLog from '../tj/sender';
+import SenderDayLogXQ from '../tj/senderxq';
 const {Content, Footer} = Layout;
 
 
@@ -124,6 +126,8 @@ export default class App extends Component {
                                  <Route exact path={'/app/withdrawalslog'} component={WithdrawalsLog} />
                                  <Route exact path={'/app/article'} component={ArticleList} />
                                   <Route exact path={'/app/rich'} component={Rich} />
+                                   <Route exact path={'/app/senderdaylog'} component={SenderDayLog} />
+                                    <Route exact path={'/app/Senderdaylogxq'} component={SenderDayLogXQ} />
                             <Route component={noMatch} />
                         </Switch>
                          </Spin>

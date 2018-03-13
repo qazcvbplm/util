@@ -42,7 +42,7 @@ export default class SiderCustom extends Component{
         this.setState({
             selectedKey: e.key
         });
-        if(e.key==='外卖订单'||e.key==='堂食订单'){
+        if(e.key==='外卖订单'||e.key==='堂食订单'||e.key==='跑腿订单'){
                 localStorage.setItem("orderType",e.key);
              if(!Static.order){
                 Static.history.push({pathname:'/app/order'});
@@ -139,10 +139,16 @@ export default class SiderCustom extends Component{
                        <Menu.Item key={"堂食订单"}>
                             <span  >堂食订单</span>
                        </Menu.Item>
+                       <Menu.Item key={"跑腿订单"}>
+                            <span  >跑腿订单</span>
+                       </Menu.Item>
                     </SubMenu>
                     <SubMenu key="/app/tj" title={<span><Icon type="user" />统计</span>}>
                        <Menu.Item key={"/app/tjsub"}>
                            <Link to={"/app/statistics"}><span>外卖统计</span></Link>
+                       </Menu.Item>
+                       <Menu.Item key={"/app/sender"}>
+                           <Link to={"/app/senderdaylog"}><span>跑腿统计</span></Link>
                        </Menu.Item>
                        <Menu.Item key={"/app/txlog"}>
                            <Link to={"/app/withdrawalslog"}><span>提现记录</span></Link>

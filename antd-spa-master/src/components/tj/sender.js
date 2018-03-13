@@ -1,32 +1,29 @@
 import React from 'react';
-import {Table,Button,Input,message} from 'antd';
+import {Table,Button,Dropdown,Icon,Modal,Menu,Input} from 'antd';
 import BreadcrumbCustom from '../common/BreadcrumbCustom';
 import Static from '../static/Static';
 let that;
-export default class ShopStatistics extends React.Component {
+export default class SenderDayLog extends React.Component {
 	constructor(props) {
 		super(props);
 		that=this;
-		let time=localStorage.getItem("tjTime");
 		 this.state={
               	data:[],
               	query:{wheres:[
               		{value:'parentId',opertionType:'equal',opertionValue:Static.school.sunwouId},
-              		{value:'type',opertionType:'equal',opertionValue:"商铺日志"},
-              		{value:'time',opertionType:'equal',opertionValue:time},
+              		{value:'type',opertionType:'equal',opertionValue:"学校跑腿日志"},
               		{value:'isDelete',opertionType:'equal',opertionValue:false}
               		],
               		pages:{currentPage:1,size:10},
               		sorts:[{value:"time",asc:false}]
               	},
               	total:0,
-              	visible:true,
+              	visible:false,
               	modalkey:0,
               	floorDefault:[],
-              	codeBtn:'发送',
-                trigger:'click'
+              	  trigger:'click'
           }
-          that.getData();
+          this.getData();
 	};
     getData(){
          Static.Loading();
@@ -49,45 +46,49 @@ export default class ShopStatistics extends React.Component {
  		this.setState({query:query});
  		this.getData();
     };
-  
+    handleCancel(){
+         this.setState({
+         	visible:false,
+         	modalkey:this.state.modalkey+1,
+         })
+    };
+    handleOk(){
+    	
+    };
     menuClick(e){
     	if(e.key==='1'){	
-    	    Static.Loading();
-    	    Static.request('/shop/shopwithdrawals',{Id:that.state.temp.sunwouId,secert:that.state.secert},function(res){
-           				if(res.code){
-           					message.success(res.msg);
-           				}else{
-           					message.error(res.msg);
-           				}
-           				Static.hideLoading();
-
-           }) 
+    	   localStorage.setItem("tjTime",this.state.temp.time) ;
+    	   Static.history.push({pathname:"/app/senderdaylogxq"});
     	}
-      
     };
     dropdownclick(record){
             that.setState({temp:record});
     };
-  
 	render() {
+		const that=this;
+		const menu = (
+		  <Menu  onClick={that.menuClick.bind(that)}>
+		    <Menu.Item key="1">查看详情</Menu.Item>
+		  </Menu>
+		);
 		const columns = [{
-			  title: '店铺名',
-			  key: 'name',
-			  dataIndex:'name',
+			  title: '日期',
+			  key: 'time',
+			  dataIndex:'time',
 			   filterDropdown: (
 		        <div className="custom-filter-dropdown">
 		          <Input
 		            placeholder="Search"
 		            onChange={this.search.bind(this)}
 		          />
-		          <Button type="primary" onClick={this.onSearch.bind(this,"name")}>Search</Button>
+		          <Button type="primary" onClick={this.onSearch.bind(this,"time")}>Search</Button>
 		        </div>
 		      ),
-			},{
+			}/*,{
 			  title: '交易额',
 			  key: 'totalIn',
 			  dataIndex:'totalIn'
-			},{
+			}*/,{
 			  title: '平台所得',
 			  key: 'appGet',
 			  dataIndex:'appGet',
@@ -96,42 +97,35 @@ export default class ShopStatistics extends React.Component {
 			  	return rs;
 			  }
 			},{
-			  title: '商铺所得',
+			  title: '个人所得',
 			  key: 'selfGet',
 			  dataIndex:'selfGet'
 			},{
-			  title: '配送员所得',
-			  key: 'senderGet',
-			  dataIndex:'senderGet'
+			  title: '外卖订单所得',
+			  key: 'takeOutGet',
+			  dataIndex:'takeOutGet'
 			},{
-			  title: '满减优惠',
-			  key: 'fullCut',
-			  dataIndex:'fullCut'
-			},{
-			  title: '商品折扣',
-			  key: 'discount',
-			  dataIndex:'discount'
-			},{
-			  title: '配送费',
-			  key: 'sendPrice',
-			  dataIndex:'sendPrice'
-			},{
-			  title: '餐盒费',
-			  key: 'boxPrice',
-			  dataIndex:'boxPrice'
-			},{
-			  title: '商品费用',
-			  key: 'productPrice',
-			  dataIndex:'productPrice'
+			  title: '跑腿订单所得',
+			  key: 'runGet',
+			  dataIndex:'runGet'
 			},{
 			  title: '外卖订单总数',
 			  key: 'takeOutNumber',
 			  dataIndex:'takeOutNumber'
 			},{
-			  title: '堂食订单总数',
+			  title: '跑腿订单总数',
 			  key: 'tSNumber',
 			  dataIndex:'tSNumber'
 			}/*,{
+			  title: '是否支付商铺',
+			  key: 'settlement',
+			  render(text,record){
+                        if(record.settlement)
+                        	return <Tag color="green">已支付</Tag>;
+                        else
+                            return <Tag color="red">未支付</Tag>;
+			  },
+			}*//*,{
 			  title: '审核状态',
 			  key: 'status',
 	         filters: [
@@ -151,7 +145,7 @@ export default class ShopStatistics extends React.Component {
 			  		return <Tag color="green">{record.status}</Tag>;
 			  	}
 			  }
-			}*//*,{
+			}*/,{
 			  title: '操作',
 			  key: 'opertion',
 			  render(text, record) {
@@ -161,10 +155,17 @@ export default class ShopStatistics extends React.Component {
 					      </Button>
 					    </Dropdown>
 			  },
-			}*/];
+			}];
 		return (
 			<div >
-			     
+			     <Modal
+			     key={this.state.modalkey}
+		          title=""
+		          visible={this.state.visible}
+		          onOk={this.handleOk.bind(this)}
+		          onCancel={this.handleCancel.bind(this)}
+		        >
+		        </Modal>
 			    <BreadcrumbCustom paths={['首页','学校统计','']}/>
 				<Table  pagination={{
                     pageSize:this.state.query.pages.size,

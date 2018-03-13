@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table,Input,Button,Avatar,Tag,Dropdown,Icon,Menu,Modal} from 'antd';
+import {Table,Input,Button,Avatar,Tag,Dropdown,Icon,Menu,Modal,message} from 'antd';
 import BreadcrumbCustom from '../common/BreadcrumbCustom';
 import Static from '../static/Static';
 import Shopadd from './shopadd';
@@ -46,28 +46,35 @@ export default class Shoplist extends React.Component {
          this.setState({opertion:record})
     };
     menuClick(e){
-    	let show;
-    	if(e.key==='1'){
-               show=<Shopadd  params={this.state.opertion}/>;
-    	}
-    	if(e.key==='2'){
-    	   let query={type:'商品分类',shopId:this.state.opertion.sunwouId,url:'/category',add:'/addproductcategory'};
-    	   localStorage.setItem('category',JSON.stringify(query));
-           Static.history.push({pathname:'/app/category'});
-    	}
-    	if(e.key==='3'){
-    		show=<Opentime url='shop/opentime' shopId={this.state.opertion.sunwouId}/>
-    	}
-    	if(e.key==='4'){
-    		show=<Fullcut url='shop/fullcut' shopId={this.state.opertion.sunwouId}/>
-    	}
-    	 this.setState({
-		       	Modalkey:this.state.Modalkey+1,
-		       	updatevisible:true,
-		       	show:show
-		       })
-      
-    };
+	    	let show;
+	    	if(e.key==='1'){
+	               show=<Shopadd  params={this.state.opertion}/>;
+	    	}
+	    	if(e.key==='2'){
+	    	   let query={type:'商品分类',shopId:this.state.opertion.sunwouId,url:'/category',add:'/addproductcategory'};
+	    	   localStorage.setItem('category',JSON.stringify(query));
+	           Static.history.push({pathname:'/app/category'});
+	    	}
+	    	if(e.key==='3'){
+	    		show=<Opentime url='shop/opentime' shopId={this.state.opertion.sunwouId}/>
+	    	}
+	    	if(e.key==='4'){
+	    		show=<Fullcut url='shop/fullcut' shopId={this.state.opertion.sunwouId}/>
+	    	}
+	    	if(e.key==='6'){
+	    		let that=this;
+	    		Static.request('shop/update',{sunwouId:this.state.opertion.sunwouId,isDelete:true},function(res){
+	               message.success(res.msg);
+	               that.getData();
+				});
+	    		return;
+	    	}
+	    	 this.setState({
+			       	Modalkey:this.state.Modalkey+1,
+			       	updatevisible:true,
+			       	show:show
+			       })
+    	};
     hideModal(){
           this.setState({
           	updatevisible:false

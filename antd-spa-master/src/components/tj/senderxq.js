@@ -1,9 +1,9 @@
 import React from 'react';
-import {Table,Button,Input,message} from 'antd';
+import {Table,Button,Input} from 'antd';
 import BreadcrumbCustom from '../common/BreadcrumbCustom';
 import Static from '../static/Static';
 let that;
-export default class ShopStatistics extends React.Component {
+export default class SenderDayLogXQ extends React.Component {
 	constructor(props) {
 		super(props);
 		that=this;
@@ -12,7 +12,7 @@ export default class ShopStatistics extends React.Component {
               	data:[],
               	query:{wheres:[
               		{value:'parentId',opertionType:'equal',opertionValue:Static.school.sunwouId},
-              		{value:'type',opertionType:'equal',opertionValue:"商铺日志"},
+              		{value:'type',opertionType:'equal',opertionValue:"配送员跑腿日志"},
               		{value:'time',opertionType:'equal',opertionValue:time},
               		{value:'isDelete',opertionType:'equal',opertionValue:false}
               		],
@@ -51,18 +51,7 @@ export default class ShopStatistics extends React.Component {
     };
   
     menuClick(e){
-    	if(e.key==='1'){	
-    	    Static.Loading();
-    	    Static.request('/shop/shopwithdrawals',{Id:that.state.temp.sunwouId,secert:that.state.secert},function(res){
-           				if(res.code){
-           					message.success(res.msg);
-           				}else{
-           					message.error(res.msg);
-           				}
-           				Static.hideLoading();
-
-           }) 
-    	}
+ 
       
     };
     dropdownclick(record){
@@ -71,7 +60,7 @@ export default class ShopStatistics extends React.Component {
   
 	render() {
 		const columns = [{
-			  title: '店铺名',
+			  title: '配送员名字',
 			  key: 'name',
 			  dataIndex:'name',
 			   filterDropdown: (
@@ -84,11 +73,7 @@ export default class ShopStatistics extends React.Component {
 		        </div>
 		      ),
 			},{
-			  title: '交易额',
-			  key: 'totalIn',
-			  dataIndex:'totalIn'
-			},{
-			  title: '平台所得',
+			  title: '贡献平台',
 			  key: 'appGet',
 			  dataIndex:'appGet',
 			  render(text,record){
@@ -96,39 +81,23 @@ export default class ShopStatistics extends React.Component {
 			  	return rs;
 			  }
 			},{
-			  title: '商铺所得',
+			  title: '个人所得',
 			  key: 'selfGet',
 			  dataIndex:'selfGet'
 			},{
-			  title: '配送员所得',
-			  key: 'senderGet',
-			  dataIndex:'senderGet'
+			  title: '外卖订单所得',
+			  key: 'takeOutGet',
+			  dataIndex:'takeOutGet'
 			},{
-			  title: '满减优惠',
-			  key: 'fullCut',
-			  dataIndex:'fullCut'
-			},{
-			  title: '商品折扣',
-			  key: 'discount',
-			  dataIndex:'discount'
-			},{
-			  title: '配送费',
-			  key: 'sendPrice',
-			  dataIndex:'sendPrice'
-			},{
-			  title: '餐盒费',
-			  key: 'boxPrice',
-			  dataIndex:'boxPrice'
-			},{
-			  title: '商品费用',
-			  key: 'productPrice',
-			  dataIndex:'productPrice'
+			  title: '跑腿订单所得',
+			  key: 'runGet',
+			  dataIndex:'runGet'
 			},{
 			  title: '外卖订单总数',
 			  key: 'takeOutNumber',
 			  dataIndex:'takeOutNumber'
 			},{
-			  title: '堂食订单总数',
+			  title: '跑腿订单总数',
 			  key: 'tSNumber',
 			  dataIndex:'tSNumber'
 			}/*,{

@@ -119,13 +119,20 @@ export default class Order extends React.Component {
 			  title: '商品详情',
 			  key: 'xq',
 			  render(text,record){
-                  let rs='';
-                  for(let i=0;i<record.orderProduct.length;i++){
+			  	let rs='';
+			  	if(record.type==='外卖订单'||record.type==='堂食订单'){
+                    for(let i=0;i<record.orderProduct.length;i++){
                   	     rs+=record.orderProduct[i].product.name+
                   	     '('+record.orderProduct[i].attribute.name+'x'+record.orderProduct[i].number+')';
                   }
                   return rs;
-			  }
+			  	}
+                if(record.type==='跑腿订单'){
+                    rs=record.remark;
+                  }
+                  return rs;
+			  	} 
+			  
 			},{
 			  title: '联系人',
 			  key: 'address.concatName',

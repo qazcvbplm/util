@@ -1,9 +1,9 @@
 import React, { Component } from 'react'; 
 import BreadcrumbCustom from '../common/BreadcrumbCustom';
-import { Card, Row, Col, Collapse} from 'antd';
-import './index.less';
+import { Card, Row, Col, Collapse,Table,Tag} from 'antd';
 /*import CountUp from 'react-countup';*/
-import ReactEcharts from 'echarts-for-react';
+import './index.less';
+/*import ReactEcharts from 'echarts-for-react';*/
 import Static from '../static/Static';
 const Panel = Collapse.Panel;
 const classify = [
@@ -28,13 +28,17 @@ export default class MIndex extends Component {
     constructor(props) {
          super(props);
          this.state={
-            count:[0,0,0,0]
+            count:[0,0,0,0],
+            query:{
+                wheres:[{value:'schoolId',opertionType:'equal',opertionValue:Static.school.sunwouId}],
+                pages:{currentPage:1,size:10}
+            }
          }
          that=this;
-         that.init();
+         that.getData();
     };
-    init(){
-        Static.Loading();
+    getData(){
+        let that=this;
            Static.request('/statistics/schoolindex',{
             schoolId:Static.school.sunwouId
            },function(res){
@@ -42,7 +46,12 @@ export default class MIndex extends Component {
                  that.setState({
                    count:[temp.userActiveCount,temp.orderNumber,temp.schoolToDayTransactionMoney,temp.schoolMoney]
                  })
-                 Static.hideLoading();
+           }); 
+           Static.request('/evaluate/find',{query:JSON.stringify(this.state.query)},function(res){
+                 that.setState({
+                    total:res.params.total,
+                    data:res.params.pl
+                 })
            });  
     };
     CountUp(){
@@ -67,7 +76,7 @@ export default class MIndex extends Component {
         });
         return cu;
     };
-    getOption(){
+   /* getOption(){
         let option = {
             backgroundColor: "#fff",
             color: ['rgb(216, 151, 235)', 'rgb(246, 152, 153)', 'rgb(100, 234, 145)'],
@@ -138,7 +147,7 @@ export default class MIndex extends Component {
             }]
         };
         return option;
-    };
+    };*/
     Panel(){
         let panel = text.map(function(item,index){
             return(
@@ -151,6 +160,69 @@ export default class MIndex extends Component {
         return panel;
     };
     render() {
+            const columns = [{
+              title: '订单号',
+              key: 'orderId',
+              dataIndex:'orderId'
+            }/*,{
+              title: '配送员',
+              key: 'senderId',
+              dataIndex:'senderId'
+            }*/,{
+              title: '店铺评分',
+              key: 'shopNumber',
+              render:function(text,record){
+                   if(record.shopNumber===10){
+                    return <Tag color="green">{record.shopNumber}分</Tag>
+                   }
+                   if(record.shopNumber>=8){
+                    return <Tag color="cyan">{record.shopNumber}分</Tag>
+                   }
+                   if(record.shopNumber>=6){
+                    return <Tag color="blue">{record.shopNumber}分</Tag>
+                   }
+                     if(record.shopNumber>=4){
+                    return <Tag color="#f50">{record.shopNumber}分</Tag>
+                   }
+                    if(record.shopNumber>=2){
+                    return <Tag color="red">{record.shopNumber}分</Tag>
+                   }
+                     if(record.shopNumber>=0){
+                    return <Tag color="red">{record.shopNumber}分</Tag>
+                   }
+              }
+            },{
+              title: '配送员评分',
+              key: 'senderNumber',
+              render:function(text,record){
+                   if(record.senderNumber===10){
+                    return <Tag color="green">{record.senderNumber}分</Tag>
+                   }
+                   if(record.senderNumber>=8){
+                    return <Tag color="cyan">{record.senderNumber}分</Tag>
+                   }
+                   if(record.senderNumber>=6){
+                    return <Tag color="blue">{record.senderNumber}分</Tag>
+                   }
+                     if(record.senderNumber>=4){
+                    return <Tag color="#f50">{record.senderNumber}分</Tag>
+                   }
+                    if(record.senderNumber>=2){
+                    return <Tag color="red">{record.senderNumber}分</Tag>
+                   }
+                     if(record.senderNumber>=0){
+                    return <Tag color="red">{record.senderNumber}分</Tag>
+                   }
+              }
+            },{
+              title: '描述店铺',
+              key: 'shopDes',
+              dataIndex:'shopDes'
+            },{
+              title: '描述配送员',
+              key: 'senderDes',
+              dataIndex:'senderDes'
+            }];
         return (
             <div>
                 <BreadcrumbCustom paths={['首页']}/>
@@ -160,11 +232,11 @@ export default class MIndex extends Component {
                     </Row>
                     <Row gutter={24} style={{marginBottom:'20px'}}>
                         <Col md={24}>
-                            <Card bodyStyle={{padding: 0,height:'277px',overflow:'hidden'}}>
+                          {/*  <Card bodyStyle={{padding: 0,height:'277px',overflow:'hidden'}}>
                                 <ReactEcharts
                                     option={this.getOption()}
                                 />
-                            </Card>
+                            </Card>*/}
                         </Col>
                         {/*<Col md={8}>
                             <Card bodyStyle={{padding: 0}}>
@@ -260,21 +332,35 @@ export default class MIndex extends Component {
                             </Card>
                         </Col>
                     </Row>*/}
-                    {/*<Row>
+                    <Row>
                         <Col md={24}>
                             <Card>
                                 <div style={{marginBottom:'20px'}}>
-                                    <h3>留言板</h3>
+                                    <h3>用户评论</h3>
                                 </div>
                                 <Table
                                     columns={columns}
-                                    dataSource={data}
-                                    scroll={{ x: '110%' }}
-                                    pagination = {false}
-                                />
+                                    dataSource={this.state.data}
+                                   pagination={{
+                                        pageSize:this.state.query.pages.size,
+                                        total:this.state.total,
+                                        showTotal: function (total) {  //设置显示一共几条数据
+                                            return '共 ' + total + ' 条数据'; 
+                                        },
+                                        onChange:function(page,pagesize){
+                                            let query=this.state.query;
+                                            query.pages.currentPage=page;
+                                            query.pages.size=pagesize;
+                                             this.setState({
+                                                query:query
+                                             });
+                                             this.getData();
+                                        }.bind(this)
+                                    }}
+                                         />
                             </Card>
                         </Col>
-                    </Row>*/}
+                    </Row>
                 </div>
             </div>
         )

@@ -96,6 +96,7 @@ class Withdrawals extends React.Component {
 		return (
 			<div>
 			<Modal
+			     closable={false}
 			     key={this.state.modalkey}
 		          title="获取验证码"
 		          visible={this.state.visible}
