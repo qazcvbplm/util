@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table,InputNumber,Button,Dropdown,Icon,Modal,Menu,Tag,Checkbox,Divider,message,Input} from 'antd';
+import {Table,InputNumber,Button,Dropdown,Icon,Modal,Menu,Tag,Checkbox,Divider,message,Input,Switch} from 'antd';
 import BreadcrumbCustom from '../common/BreadcrumbCustom';
 import Static from '../static/Static';
 const CheckboxGroup = Checkbox.Group;
@@ -25,6 +25,8 @@ export default class SenderList extends React.Component {
               	visible:false,
               	modalkey:0,
               	floorDefault:[],
+                trigger:'click'
+
           }
           this.getData();
           that.initFloor();
@@ -107,7 +109,9 @@ export default class SenderList extends React.Component {
           	floors:floorName.toString(),
             shopsId:that.state.shopsId.toString(),
             shops:shopName.toString(),
-          	rate:that.state.rate/100
+          	rate:that.state.rate/100,
+            takeOutFlag:this.state.takeOutFlag,
+            runFlag:this.state.runFlag
           },function(res){
                    if(res.code){
                     message.success(res.msg);
@@ -143,15 +147,25 @@ export default class SenderList extends React.Component {
                       data2.push({label:this.state.shop[i].shopName,value:this.state.shop[i].sunwouId});
            }
     		   let rate=this.state.temp.rate*100;
+           this.setState({
+            floorsId:this.state.temp.floorsId,
+            shopsId:this.state.temp.shopsId,
+            takeOutFlag:this.state.temp.takeOutFlag,
+            runFlag:this.state.temp.runFlag
+          });
     		   let show=<div>
     		   <CheckboxGroup defaultValue={this.state.temp.floorsId}   options={data} onChange={this.floorClick.bind(this)} />
     		   <Divider />
            <CheckboxGroup defaultValue={this.state.temp.shopsId}   options={data2} onChange={this.shopClick.bind(this)} />
            <Divider />
     		   <span>对订单抽成</span>：<InputNumber defaultValue={rate} formatter={value => `${value}%`} onChange={this.number.bind(this)} min={0} max={100} />
+           <Divider />
+           <span>外卖接单</span>：<Switch onChange={e => this.setState({takeOutFlag:e})} checkedChildren="开启" unCheckedChildren="关闭" defaultChecked={this.state.temp.takeOutFlag} />
+           <Divider />
+           <span>跑腿接单</span>：<Switch onChange={e => this.setState({runFlag:e})} checkedChildren="开启" unCheckedChildren="关闭" defaultChecked={this.state.temp.runFlag} />
     		   </div>;
-               that.setState({visible:true,show:show,floorsId:this.state.temp.floorsId,rate:(this.state.temp.rate*100)});
-               return;
+            that.setState({visible:true,show:show,floorsId:this.state.temp.floorsId,rate:(this.state.temp.rate*100)});
+            return;
     	}
     	let pass=false;
     	if(e.key==='2'){

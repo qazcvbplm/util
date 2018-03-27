@@ -1,5 +1,5 @@
 import React from 'react';
-import {Form,Input,Row,Button,message,Divider,Select,Modal,Col,InputNumber} from 'antd';
+import {Form,Input,Row,Button,message,Divider,Select,Modal,Col,InputNumber,Avatar} from 'antd';
 import Static from '../static/Static';
 import BreadcrumbCustom from '../common/BreadcrumbCustom';
 const FormItem = Form.Item;
@@ -12,8 +12,18 @@ class Withdrawals extends React.Component {
 		that=this;
 		this.state={
              visible:true,
-             codeBtn:'获取'
+             codeBtn:'获取',
+             senderMoney:'读取中'
 		};
+		that.init();
+	};
+	init(){
+		let query={
+        	wheres:[{value:"sunwouId",opertionType:"equal",opertionValue:Static.school.sunwouId}]
+        }
+        Static.request('/school/find',{query:JSON.stringify(query)},function(res){
+        			that.setState({senderMoney:res.params.schools[0].senderMoney})
+           })
 	};
     submit(){
          let fields=this.props.form.getFieldsValue();
@@ -87,6 +97,23 @@ class Withdrawals extends React.Component {
            })
     	Static.hideLoading();
     };
+    user(e){
+        let openid=e.target.value;
+        let query={
+        	wheres:[{value:"openid",opertionType:"equal",opertionValue:openid}]
+        }
+        Static.request('/user/find',{query:JSON.stringify(query)},function(res){
+        			let user; 
+           			if(res.params.users.length>0){
+                           user=res.params.users[0];
+                           that.setState({user:user});
+           			}else{
+           				user={nickName:"请输入正确的openid"};
+           				  that.setState({user:user});
+           				
+           			}
+           })
+    };
 	render() {
 		const { getFieldDecorator} = this.props.form;
 		 const formItemLayout  = {
@@ -152,15 +179,23 @@ class Withdrawals extends React.Component {
 	                   <FormItem label="用户openid"
 	                   	{...formItemLayout}
 				        >
-				          {getFieldDecorator('openid',{initialValue:''})(<Input  placeholder="用户openid"  />)}
+				          {getFieldDecorator('openid',{initialValue:''})(<Input onChange={this.user.bind(this)} placeholder="用户openid"  />)}
 				        </FormItem>
 			     </Row>
+			     {this.state.user?<Row align="middle">
+			     <center>
+			      <Avatar alt="头像" size="large" src={this.state.user.avatarUrl} />
+			      {this.state.user.nickName}
+			      </center>
+			      </Row>:null}
 			      <Row align="middle">
 	                   <FormItem label="提现金额"
 	                   	{...formItemLayout}
 				        >
 				          {getFieldDecorator('amount',{initialValue:'0'})(<InputNumber  step="0.01"  />)}
+				          <span style={{color:"red"}}>配送员金额：{this.state.senderMoney}</span>
 				        </FormItem>
+
 			     </Row>
 			   
 			     <Row align="middle">

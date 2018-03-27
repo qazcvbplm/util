@@ -79,6 +79,7 @@ export default class SiderCustom extends Component{
             return(
             <Sider
             trigger={null}
+            collapsedWidth={0}
             collapsed={collapsed}
             >
                 <div className="logo" style={collapsed?{backgroundSize:'70%'}:{backgroundSize:'30%'}}/>

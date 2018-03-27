@@ -117,5 +117,10 @@
   },
   "eslintConfig": {
     "extends": "react-app"
-  }
+  },
+  "description": "React+Antd后台管理系统",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

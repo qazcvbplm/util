@@ -172,15 +172,16 @@ export default class Order extends React.Component {
 			  title: '状态',
 			  key: 'status',
 			  dataIndex: 'status',
-		         filters: [
-		        { text: '待付款', value: '待付款' },
-		        { text: '待接手', value: '待接手' },
-		        { text: '商家已接手', value: '商家已接手' },
-		        { text: '配送员已接手', value: '配送员已接手' },
-		        { text: '已完成', value: '已完成' },
-		        { text: '已取消', value: '已取消' },
-		      ],
-      onFilter: (value, record) => record.status.includes(value),},
+		     filterDropdown: (
+		        <div className="custom-filter-dropdown">
+		          <Input
+		            placeholder="Search"
+		            onChange={this.search.bind(this)}
+		          />
+		          <Button type="primary" onClick={this.onSearch.bind(this,"status")}>Search</Button>
+		        </div>
+		      ),
+		 },
 			{
 			  title: '操作',
 			  key: 'opertion',

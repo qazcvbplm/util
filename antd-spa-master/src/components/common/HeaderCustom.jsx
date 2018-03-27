@@ -19,7 +19,8 @@ export default class HeaderCustom extends Component{
         var query={
             wheres:[
                 {value:'schoolId',opertionType:'equal',opertionValue:Static.school.sunwouId},
-                {value:'status',opertionType:'equal',opertionValue:'待审核'}
+                {value:'status',opertionType:'equal',opertionValue:'待审核'},
+                {value:'isDelete',opertionType:'equal',opertionValue:false}
                 ],
                 pages:{currentPage:1,size:1}
         }
